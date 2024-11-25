@@ -10,10 +10,10 @@ class RestaurantPage extends StatefulWidget {
   State<RestaurantPage> createState() => _RestaurantPageState();
 }
 
-class _RestaurantPageState extends State<RestaurantPage> {
+class _RestaurantPageState extends State<RestaurantPage> { 
   Future<List<Restaurant>> fetchRestaurants(CookieRequest request) async {
     try {
-      final response = await request.get('http://localhost:8000/json/');
+      final response = await request.get('https://denpasar-food.vercel.app/json/');
       List<Restaurant> listRestaurant = [];
 
       // Ensure response is treated as List<dynamic>
@@ -65,25 +65,25 @@ class _RestaurantPageState extends State<RestaurantPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      snapshot.data[index].name,
+                      snapshot.data[index].name ?? 'No name',
                       style: const TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Text(snapshot.data[index].description),
+                    Text(snapshot.data[index].description ?? 'No description'),
                     const SizedBox(height: 10),
                     Row(
                       children: [
                         const Icon(Icons.star, color: Colors.amber),
-                        Text(" ${snapshot.data[index].rating}"),
+                        Text(" ${snapshot.data[index].rating ?? 'N/A'}"),
                         const SizedBox(width: 20),
-                        Text("Price: ${snapshot.data[index].priceRange}"),
+                        Text("Price: ${snapshot.data[index].priceRange ?? 'Not specified'}"),
                       ],
                     ),
                     const SizedBox(height: 10),
-                    Text("Address: ${snapshot.data[index].address}"),
+                    Text("Address: ${snapshot.data[index].address ?? 'No address'}"),
                   ],
                 ),
               ),
