@@ -188,6 +188,8 @@ Admin:
 - The user_customization view provides personalized data.
 - Navigation adjusts based on request.user.is_authenticated and request.user.is_superuser.
 
+![Navbar Diagram](NavbarDiagramREADME.png)
+
 ## Admin Dashboard Module
 
 - Managing Restaurants: Admin users add, edit, or delete restaurant data via HTTP requests.
