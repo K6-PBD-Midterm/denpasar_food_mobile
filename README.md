@@ -10,6 +10,7 @@
 ## Link to the APK (not required at Stage I. The APK link can be added to README.md after completing Stage II.)
 
 Link : 
+`https://install.appcenter.ms/orgs/k6-denpasar-food/apps/denpasar-food/distribution_groups/public/releases`
 
 ## Application description
 
