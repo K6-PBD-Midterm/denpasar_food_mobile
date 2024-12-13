@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import '../models/restaurant.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'dart:async'; // Add this import
+import 'dart:async';
+import '../widgets/left_drawer.dart';
 
 class RestaurantPage extends StatefulWidget {
   const RestaurantPage({super.key});
@@ -160,6 +161,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
       appBar: AppBar(
         title: const Text('Restaurants in Denpasar'),
       ),
+      drawer: const LeftDrawer(),
       body: Column(
         children: [
           Padding(
