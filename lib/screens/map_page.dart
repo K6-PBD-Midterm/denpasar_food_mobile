@@ -39,7 +39,7 @@ Future<List<Restaurant>> _loadMarkers(CookieRequest request) async {
       zoom = false;
       return _restaurants;
     } 
-    CookieRequest request = CookieRequest(); // Assurez-vous d'initialiser correctement votre CookieRequest
+    CookieRequest request = CookieRequest(); 
     
     List<Restaurant> restaurants = await fetchRestaurants(request);
    _allCuisines = _extractUniqueCuisines(restaurants).toList()..sort();
@@ -81,7 +81,7 @@ void _onSearchChanged(String query) {
   void _zoomIn() {
     zoom = true;
     setState(() {
-      _currentZoom += 1; // Incrémenter le zoom
+      _currentZoom += 1; 
       _mapController.move(_mapController.camera.center, _currentZoom);
     });
   }
@@ -89,7 +89,7 @@ void _onSearchChanged(String query) {
   void _zoomOut() {
     zoom = true;
     setState(() {
-      _currentZoom -= 1; // Décrémenter le zoom
+      _currentZoom -= 1; 
       _mapController.move(_mapController.camera.center, _currentZoom);
     });
   }
@@ -97,7 +97,7 @@ void _onSearchChanged(String query) {
     try {
       final response = await request.get('https://denpasar-food.vercel.app/json/');
       List<Restaurant> listRestaurant = [];
-      print ("response restau list $response §§§§§§§§§§§§§§§§§§");
+     
       if (response is List ) {
         for (var restaurant in response) {
           if (restaurant != null && restaurant is Map<String, dynamic>) {
@@ -115,7 +115,7 @@ void _onSearchChanged(String query) {
 
 
     List<Restaurant>  filterRestaurants (List<Restaurant> restaurants) {
-      print ("filterRestaurants search query : $_searchQuery §§");
+  
      if (_searchQuery.isNotEmpty || _selectedCuisines.isNotEmpty) {
         restaurants = restaurants.where((restaurant) {
           bool matchesSearch = _searchQuery.isEmpty ||
@@ -145,7 +145,7 @@ void _onSearchChanged(String query) {
     return cuisines;
   }
   void _showPopup(BuildContext context, Restaurant restaurant) {
-    _popupOverlayEntry?.remove(); // Remove any existing overlay entry
+    _popupOverlayEntry?.remove(); 
     _popupOverlayEntry = OverlayEntry(
       builder: (context) => Positioned(
         top: MediaQuery.of(context).size.height / 2 - 100,
@@ -157,7 +157,7 @@ void _onSearchChanged(String query) {
     padding: const EdgeInsets.all(8.0),
     decoration: BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(12.0), // Coins arrondis
+      borderRadius: BorderRadius.circular(12.0), 
       boxShadow: [
         BoxShadow(
           color: Colors.black.withOpacity(0.1),
@@ -169,12 +169,12 @@ void _onSearchChanged(String query) {
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Titre en grand et gras
+    
         Text(
           restaurant.name ?? 'Restaurant',
           style: const TextStyle(
-            fontSize: 18.0, // Taille plus grande
-            fontWeight: FontWeight.bold, // Texte gras
+            fontSize: 18.0, 
+            fontWeight: FontWeight.bold,
           ),
           textAlign: TextAlign.center,
         ),
@@ -190,23 +190,23 @@ void _onSearchChanged(String query) {
           ),
         ),
         const SizedBox(height: 8.0),
-        // Cuisine en plus petit et italique
+        
         Text(
           'Cuisine: ${restaurant.cuisines?.join(', ') ?? 'N/A'}',
           style: const TextStyle(
-            fontSize: 12.0, // Plus petit
-            fontStyle: FontStyle.italic, // Italique
+            fontSize: 12.0, 
+            fontStyle: FontStyle.italic, 
           ),
         ),
         const SizedBox(height: 4.0),
-        // Rating en semi-gras
+    
         Text(
           'Rating: ${restaurant.rating ?? 'N/A'}',
           style: const TextStyle(
             fontWeight: FontWeight.w600, // Semi-bold
           ),
         ),
-        // Price en semi-gras
+        
         Text(
           'Price: ${restaurant.priceRange ?? 'N/A'}',
           style: const TextStyle(
@@ -214,7 +214,7 @@ void _onSearchChanged(String query) {
           ),
         ),
         const SizedBox(height: 8.0),
-        // Bouton "Close"
+        
         TextButton(
           onPressed: () {
             _popupOverlayEntry?.remove();
@@ -375,7 +375,7 @@ void _onSearchChanged(String query) {
                     children: [
                       const Icon(
                         Icons.location_pin,
-                        color: Colors.red,
+                        color: Color.fromARGB(255, 154, 57, 51),
                         size: 40,
                          ),                 
                     ],
