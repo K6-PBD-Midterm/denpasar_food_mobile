@@ -38,6 +38,7 @@ class Restaurant {
   List<String>? diningOptions;
   List<dynamic>? ownerTypes;
   List<String>? topTags;
+  
 
   Restaurant({
     this.id,

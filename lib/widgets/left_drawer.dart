@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:denpasar_food_mobile/screens/map_page.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -34,7 +35,12 @@ class LeftDrawer extends StatelessWidget {
           ),
           ListTile(
             title: const Text("Map"),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MapPage()),
+              );
+            },
           ),
         ],
       ),
