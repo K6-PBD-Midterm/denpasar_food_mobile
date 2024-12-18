@@ -4,6 +4,7 @@ import 'package:latlong2/latlong.dart';
 import '../models/restaurant.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'dart:async';
+import 'package:provider/provider.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({Key? key}) : super(key: key);
@@ -13,124 +14,72 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+ bool zoom = false;
   // filter restau
+   final TextEditingController _searchController = TextEditingController();
+  Timer? _debounce;
   String _searchQuery = '';
   final List<String> _selectedCuisines = [];
-  final List<String> _allCuisines = [];
+   List<String> _allCuisines = [];
   Key _dropdownKey = GlobalKey(); 
+  List<Restaurant> _restaurants = [];
+
 
   // flutter map
   final MapController _mapController = MapController();
   double _currentZoom = 12.0;
-  bool _showPopup = false;
-  final List<Marker> _markers = [];
-  
+   List<Marker> _markers = [];
+  OverlayEntry? _popupOverlayEntry;
 
- void _generateMarkers(CookieRequest request) async {
-  _markers.clear(); // Réinitialiser les marqueurs
+ 
+Future<List<Restaurant>> _loadMarkers(CookieRequest request) async {
+  print(zoom);
+    if ( _restaurants.isNotEmpty) {
 
-  var restaurants = await fetchRestaurants(request);
-  var restaurantsFiltered = filterRestaurants(restaurants);
-   _allCuisines.addAll(_extractUniqueCuisines(restaurants));
+      zoom = false;
+      return _restaurants;
+    } 
+    CookieRequest request = CookieRequest(); // Assurez-vous d'initialiser correctement votre CookieRequest
+    
+    List<Restaurant> restaurants = await fetchRestaurants(request);
+   _allCuisines = _extractUniqueCuisines(restaurants).toList()..sort();
+   setState ((){
+    _restaurants = restaurants;
+   });
+    return restaurants;
+  }
+ 
 
-  for (var restaurant in restaurantsFiltered) {
-    if (restaurant.latitude != null && restaurant.longitude != null) {
-      // Décalage pour le popup
-      final popupOffset = LatLng(restaurant.latitude! + 0.0105, restaurant.longitude!);
-
-      _markers.addAll([
-        // Marqueur principal
-        Marker(
-          point: LatLng(restaurant.latitude!, restaurant.longitude!),
-          width: 80,
-          height: 80,
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                 print (" pin being cliked !  $_showPopup");
-                _showPopup = !_showPopup; // Afficher ou masquer le popup
-                print (" pin clicked !  $_showPopup");
-              });
-            },
-            child: const Icon(
-              Icons.location_pin,
-              color: Color.fromARGB(255, 117, 12, 12),
-              size: 40,
-            ),
-          ),
-        ),
-
-        // Popup uniquement si _showPopup est vrai
-        if (_showPopup)
-          Marker(
-            point: popupOffset,
-            width: 300,
-            height: 120,
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  _showPopup = !_showPopup; // Fermer le popup
-                });
-              },
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      spreadRadius: 3,
-                      blurRadius: 5,
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Image.network(
-                      restaurant.imageUrl ?? 'https://png.pngtree.com/png-vector/20221125/ourmid/pngtree-no-image-available-icon-flatvector-illustration-pic-design-profile-vector-png-image_40966566.jpg',
-                      width: 60,
-                      height: 60,
-                      fit: BoxFit.cover,
-                    ),
-                    const SizedBox(width: 8),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          restaurant.name ?? 'Unknown',
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                        ),
-                        const SizedBox(height: 4),
-                        for (var cuisine in restaurant.cuisines ?? [])
-                          Chip(label: Text(cuisine)),
-                        Text('Rating: ${restaurant.rating ?? 'N/A'}'),
-                        Text('Price: ${restaurant.priceRange ?? 'N/A'}'),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-      ]);
-    }
+ 
+@override
+  void dispose() {
+    _searchController.dispose();
+    _debounce?.cancel();
+    super.dispose();
   }
 
-  setState(() {}); // Rafraîchir l'interface pour afficher les marqueurs
-}
+void _onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      setState(() {
+        // _zoom = false;
+        _searchQuery = query;
+      });
+    });
+  }
 
-
-@override
-void initState() {
-  super.initState();
-  print ("init state show pop up $_showPopup");
-  // Initialiser le CookieRequest
-  final request = CookieRequest();
-  _generateMarkers(request); // Appeler _generateMarkers avec la requête
- 
-}
+  void _toggleCuisine(String cuisine) {
+    setState(() {
+      if (_selectedCuisines.contains(cuisine)) {
+        _selectedCuisines.remove(cuisine);
+      } else {
+        _selectedCuisines.add(cuisine);
+      }
+      _dropdownKey = GlobalKey();
+    });
+  }
   void _zoomIn() {
+    zoom = true;
     setState(() {
       _currentZoom += 1; // Incrémenter le zoom
       _mapController.move(_mapController.camera.center, _currentZoom);
@@ -138,6 +87,7 @@ void initState() {
   }
 
   void _zoomOut() {
+    zoom = true;
     setState(() {
       _currentZoom -= 1; // Décrémenter le zoom
       _mapController.move(_mapController.camera.center, _currentZoom);
@@ -165,18 +115,23 @@ void initState() {
 
 
     List<Restaurant>  filterRestaurants (List<Restaurant> restaurants) {
-    if (_searchQuery.isNotEmpty) {
-        final query = _searchQuery.toLowerCase();
+      print ("filterRestaurants search query : $_searchQuery §§");
+     if (_searchQuery.isNotEmpty || _selectedCuisines.isNotEmpty) {
         restaurants = restaurants.where((restaurant) {
-        return (restaurant.name?.toLowerCase().contains(query) ?? false) ||
-              (restaurant.address?.toLowerCase().contains(query) ?? false) ||
-              (restaurant.description?.toLowerCase().contains(query) ?? false);
-      }).toList();
-} else if (_selectedCuisines.isNotEmpty) {
-      restaurants = restaurants.where((restaurant) {
-        return restaurant.cuisines!.any((cuisine) => _selectedCuisines.contains(cuisine));
-      }).toList();
-    }
+          bool matchesSearch = _searchQuery.isEmpty ||
+              (restaurant.name?.toLowerCase().contains(_searchQuery.toLowerCase()) ?? false) ||
+              (restaurant.description != null && 
+                restaurant.description!.toLowerCase().contains(_searchQuery.toLowerCase())) ||
+              (restaurant.address != null && 
+                restaurant.address!.toLowerCase().contains(_searchQuery.toLowerCase()));
+
+          bool matchesCuisine = _selectedCuisines.isEmpty ||
+              (restaurant.cuisines?.any((cuisine) => 
+                _selectedCuisines.contains(cuisine)) ?? false);
+
+          return matchesSearch && matchesCuisine;
+        }).toList();
+      }
     return restaurants;
     }
 
@@ -189,43 +144,65 @@ void initState() {
     }
     return cuisines;
   }
-
-  void _toggleCuisine(String cuisine) {
-    setState(() {
-      if (_selectedCuisines.contains(cuisine)) {
-        _selectedCuisines.remove(cuisine);
-      } else {
-        _selectedCuisines.add(cuisine);
-      }
-      _dropdownKey = GlobalKey();
-    });
+  void _showPopup(BuildContext context, Restaurant restaurant) {
+    _popupOverlayEntry?.remove(); // Remove any existing overlay entry
+    _popupOverlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: MediaQuery.of(context).size.height / 2 - 100,
+        left: MediaQuery.of(context).size.width / 2 - 100,
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            width: 200,
+            padding: const EdgeInsets.all(8.0),
+            color: Colors.white,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(restaurant.name ?? 'Restaurant'),
+                Image.network(restaurant.imageUrl ?? "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAWlBMVEXv8fNod4f19vhkdIRcbX52g5KPmqX29/iYoq3l6OuCj5vd4eTr7fBfcIFaa33M0dbBx82SnKe7wchtfIt8iZejq7TU2N2Ik6CwuL/Gy9Gqsrqbpa/P1NmhqrNz0egRAAADBklEQVR4nO3c63KqMBRAYUiwwUvEete27/+ax1tVAqhwEtnprO+XM62Oyw2CGTFJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJe6Mb5vqL7jjsws/wgln/dddzBZZjocuxj2HaiWNg1JL/oO3GVBA9PUzvvdF80q7AgPQ/zot1DlOnThyFBIIYWvFtrMK3mFdj30aWzFFWZjr+/qE4mFXh+YwrehsDMK34bCzmIoVEad1nC6PbD8QpXMNwOdDvKi2xMUX2jm2h7/onU2WHcZo/RCld8WN3TWZR1CeKH6LK1tTGftE2UXqpmzPGXbLwnKLkzcT8X6s/UQRReqWWX9LWs9RNGF5qOysmFb74miC9XCDUzt6k8VJtXC9jsihW9Tu5Uuq/vhvlKokuGjc1bRhWZVLdw5MWq8mU6zfNL4wKILk/W0spW6dyvOZ61p4wKd7EIzcoZot+UQVVxeA62bEmUXJuPyIV8PnDsVtxXtpikKL1S7++1U6/IZzV1g8xSFFx4i9HWMdjksNZQCGxOlFyZq8jW1VmubpZV90PngUZ8ovvDYuNt//Wy/1ZPAhsQICo+rUMa4T70msP7tJorCun8vKofKhilGWlg7wfopxlnYMMHaKUZZ2DjBuinGWPgwsDLFCAufBLqJ8RU+DXQ21OgKXwgsTzG2wpcCj1O8nsJGVvjgMNE0xbgKX5zgeYqXxKgKX57geYrnDTWmwhYTvJtiRIUtA3/fbuIpbB14mWI0hR0Cz1OMpbBT4CkxiaOwY+BpQ42isNVhwk283hJc2HmC5Va5hf8xwTgK/UxQcKGvQLGF3gKlFvoLFFroMVBmoc9AkYWeDhNyC1Xh9aJLeYV+Jyiw0Os+KLHQe6C0Qv+BwgoDBMoqDBEoqtCECJRUOPz2e5gQV2jnYa7qllOYBvr5CEGFgVBIIYXPmJ/ghZueZ+hexOWd+w3q9ycuwg5R2377DsapDflbX7rTFah+TbajQSij/aT/wNNF26FUvoELAAAAAAAAAAAAAAAAAAAAAAAAAAAA4G/4B9L3P1vg3y4/AAAAAElFTkSuQmCC"),
+                Text('Cuisine: ${restaurant.cuisines?.join(', ') ?? 'N/A'}'),
+                Text('Rating: ${restaurant.rating ?? 'N/A'}'),
+                Text('Price: ${restaurant.priceRange ?? 'N/A'}'),
+                TextButton(
+                  onPressed: () {
+                     _popupOverlayEntry?.remove();
+                    _popupOverlayEntry = null;
+                  },
+                  child: const Text('Close'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+    Overlay.of(context).insert(_popupOverlayEntry!);
   }
 
-  @override
+
+
+ @override
   Widget build(BuildContext context) {
+     final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Map restaurants'),
       ),
-      body: Stack(
+      body: Column(
         children: [
-          Positioned(
-            top: 10,
-            left: 10,
-            child:
-           Column(
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
               children: [
                 TextField(
+                  controller: _searchController,
                   decoration: const InputDecoration(
                     hintText: 'Search restaurants...',
                     prefixIcon: Icon(Icons.search),
                     border: OutlineInputBorder(),
                   ),
-                  onChanged: (value) {
-                    setState(() {
-                      _searchQuery = value;
-                    });
-                  },
+                  onChanged: _onSearchChanged,
                 ),
                 const SizedBox(height: 8),
                 Container(
@@ -300,44 +277,108 @@ void initState() {
               ],
             ),
           ),
-          FlutterMap(
-            mapController: _mapController, // Associer le contrôleur
-            options: MapOptions(
-              initialCenter: const LatLng(-8.6705, 115.2126), // Centre initial
-              initialZoom: _currentZoom,
-            ),
-            children: [
-              TileLayer(
-                urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                subdomains: const ['a', 'b', 'c'],
-                userAgentPackageName: 'com.example.app',
-              ),
-              MarkerLayer(
-                markers: _markers, // Ajouter les marqueurs
-              ),
-            ],
-          ),
-          Positioned(
-            bottom: 20,
-            right: 20,
-            child: Column(
-              children: [
-                FloatingActionButton(
-                  heroTag: 'zoomIn',
-                  onPressed: _zoomIn,
-                  tooltip: 'Zoom In',
-                  child: const Icon(Icons.zoom_in),
+      Expanded(
+        child : FutureBuilder(
+        future: _loadMarkers(request),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return  FlutterMap(
+                  mapController: _mapController,
+                  options: MapOptions(
+                    initialCenter: LatLng(-8.6705, 115.2126),
+                    initialZoom: 12.0,
+                    minZoom: 5.0,
+                    maxZoom: 18.0,
+                  ),
+                  children: [
+                    TileLayer(
+                      urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      subdomains: const ['a', 'b', 'c'],
+                      userAgentPackageName: 'com.example.app',
+                    ),
+                    MarkerLayer(
+                      markers: _markers,
+                    ),
+                    const Center(child: CircularProgressIndicator())
+                  ],
+                );
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No restaurants found.'));
+          } else {
+            List<Restaurant> filteredRestaurants = filterRestaurants(snapshot.data!);
+            _markers = filteredRestaurants.map((restaurant) {
+              
+              
+              return Marker(
+                point: LatLng(restaurant.latitude!, restaurant.longitude!),
+                width: 80,
+                height: 80,
+                child:  GestureDetector(
+                  onTap: () {
+                    _showPopup(context, restaurant);
+                  },
+                  child: Column(
+                    children: [
+                      const Icon(
+                        Icons.location_pin,
+                        color: Colors.red,
+                        size: 40,
+                         ),                 
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 10),
-                FloatingActionButton(
-                  heroTag: 'zoomOut',
-                  onPressed: _zoomOut,
-                  tooltip: 'Zoom Out',
-                  child: const Icon(Icons.zoom_out),
+              );
+            }).toList();
+            return Stack(
+              children: [
+                FlutterMap(
+                  mapController: _mapController,
+                  options: MapOptions(
+                    initialCenter: LatLng(-8.6705, 115.2126),
+                    initialZoom: 12.0,
+                    minZoom: 5.0,
+                    maxZoom: 18.0,
+                  ),
+                  children: [
+                    TileLayer(
+                      urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      subdomains: const ['a', 'b', 'c'],
+                      userAgentPackageName: 'com.example.app',
+                    ),
+                    MarkerLayer(
+                      markers: _markers,
+                    ),
+                  ],
+                ),
+                Positioned(
+                  bottom: 20,
+                  right: 20,
+                  child: Column(
+                    children: [
+                      FloatingActionButton(
+                        heroTag: 'zoomIn',
+                        onPressed: _zoomIn,
+                        tooltip: 'Zoom In',
+                        child: const Icon(Icons.zoom_in),
+                      ),
+                      const SizedBox(height: 10),
+                      FloatingActionButton(
+                        heroTag: 'zoomOut',
+                        onPressed: _zoomOut,
+                        tooltip: 'Zoom Out',
+                        child: const Icon(Icons.zoom_out),
+                      ),
+                    ],
+                     ),
                 ),
               ],
-            ),
-          ),
+            );
+          }
+        },
+      ),
+      ),
         ],
       ),
     );
