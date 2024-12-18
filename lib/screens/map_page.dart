@@ -150,31 +150,83 @@ void _onSearchChanged(String query) {
       builder: (context) => Positioned(
         top: MediaQuery.of(context).size.height / 2 - 100,
         left: MediaQuery.of(context).size.width / 2 - 100,
-        child: Material(
-          color: Colors.transparent,
-          child: Container(
-            width: 200,
-            padding: const EdgeInsets.all(8.0),
-            color: Colors.white,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(restaurant.name ?? 'Restaurant'),
-                Image.network(restaurant.imageUrl ?? "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAWlBMVEXv8fNod4f19vhkdIRcbX52g5KPmqX29/iYoq3l6OuCj5vd4eTr7fBfcIFaa33M0dbBx82SnKe7wchtfIt8iZejq7TU2N2Ik6CwuL/Gy9Gqsrqbpa/P1NmhqrNz0egRAAADBklEQVR4nO3c63KqMBRAYUiwwUvEete27/+ax1tVAqhwEtnprO+XM62Oyw2CGTFJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJe6Mb5vqL7jjsws/wgln/dddzBZZjocuxj2HaiWNg1JL/oO3GVBA9PUzvvdF80q7AgPQ/zot1DlOnThyFBIIYWvFtrMK3mFdj30aWzFFWZjr+/qE4mFXh+YwrehsDMK34bCzmIoVEad1nC6PbD8QpXMNwOdDvKi2xMUX2jm2h7/onU2WHcZo/RCld8WN3TWZR1CeKH6LK1tTGftE2UXqpmzPGXbLwnKLkzcT8X6s/UQRReqWWX9LWs9RNGF5qOysmFb74miC9XCDUzt6k8VJtXC9jsihW9Tu5Uuq/vhvlKokuGjc1bRhWZVLdw5MWq8mU6zfNL4wKILk/W0spW6dyvOZ61p4wKd7EIzcoZot+UQVVxeA62bEmUXJuPyIV8PnDsVtxXtpikKL1S7++1U6/IZzV1g8xSFFx4i9HWMdjksNZQCGxOlFyZq8jW1VmubpZV90PngUZ8ovvDYuNt//Wy/1ZPAhsQICo+rUMa4T70msP7tJorCun8vKofKhilGWlg7wfopxlnYMMHaKUZZ2DjBuinGWPgwsDLFCAufBLqJ8RU+DXQ21OgKXwgsTzG2wpcCj1O8nsJGVvjgMNE0xbgKX5zgeYqXxKgKX57geYrnDTWmwhYTvJtiRIUtA3/fbuIpbB14mWI0hR0Cz1OMpbBT4CkxiaOwY+BpQ42isNVhwk283hJc2HmC5Va5hf8xwTgK/UxQcKGvQLGF3gKlFvoLFFroMVBmoc9AkYWeDhNyC1Xh9aJLeYV+Jyiw0Os+KLHQe6C0Qv+BwgoDBMoqDBEoqtCECJRUOPz2e5gQV2jnYa7qllOYBvr5CEGFgVBIIYXPmJ/ghZueZ+hexOWd+w3q9ycuwg5R2377DsapDflbX7rTFah+TbajQSij/aT/wNNF26FUvoELAAAAAAAAAAAAAAAAAAAAAAAAAAAA4G/4B9L3P1vg3y4/AAAAAElFTkSuQmCC"),
-                Text('Cuisine: ${restaurant.cuisines?.join(', ') ?? 'N/A'}'),
-                Text('Rating: ${restaurant.rating ?? 'N/A'}'),
-                Text('Price: ${restaurant.priceRange ?? 'N/A'}'),
-                TextButton(
-                  onPressed: () {
-                     _popupOverlayEntry?.remove();
-                    _popupOverlayEntry = null;
-                  },
-                  child: const Text('Close'),
-                ),
-              ],
-            ),
+       child: Material(
+  color: Colors.transparent,
+  child: Container(
+    width: 200,
+    padding: const EdgeInsets.all(8.0),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12.0), // Coins arrondis
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.1),
+          blurRadius: 6,
+          offset: const Offset(0, 3),
+        ),
+      ],
+    ),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Titre en grand et gras
+        Text(
+          restaurant.name ?? 'Restaurant',
+          style: const TextStyle(
+            fontSize: 18.0, // Taille plus grande
+            fontWeight: FontWeight.bold, // Texte gras
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 8.0),
+        // Image
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8.0), // Coins arrondis pour l'image
+          child: Image.network(
+            restaurant.imageUrl ?? "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAWlBMVEXv8fNod4f19vhkdIRcbX52g5KPmqX29/iYoq3l6OuCj5vd4eTr7fBfcIFaa33M0dbBx82SnKe7wchtfIt8iZejq7TU2N2Ik6CwuL/Gy9Gqsrqbpa/P1NmhqrNz0egRAAADBklEQVR4nO3c63KqMBRAYUiwwUvEete27/+ax1tVAqhwEtnprO+XM62Oyw2CGTFJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJe6Mb5vqL7jjsws/wgln/dddzBZZjocuxj2HaiWNg1JL/oO3GVBA9PUzvvdF80q7AgPQ/zot1DlOnThyFBIIYWvFtrMK3mFdj30aWzFFWZjr+/qE4mFXh+YwrehsDMK34bCzmIoVEad1nC6PbD8QpXMNwOdDvKi2xMUX2jm2h7/onU2WHcZo/RCld8WN3TWZR1CeKH6LK1tTGftE2UXqpmzPGXbLwnKLkzcT8X6s/UQRReqWWX9LWs9RNGF5qOysmFb74miC9XCDUzt6k8VJtXC9jsihW9Tu5Uuq/vhvlKokuGjc1bRhWZVLdw5MWq8mU6zfNL4wKILk/W0spW6dyvOZ61p4wKd7EIzcoZot+UQVVxeA62bEmUXJuPyIV8PnDsVtxXtpikKL1S7++1U6/IZzV1g8xSFFx4i9HWMdjksNZQCGxOlFyZq8jW1VmubpZV90PngUZ8ovvDYuNt//Wy/1ZPAhsQICo+rUMa4T70msP7tJorCun8vKofKhilGWlg7wfopxlnYMMHaKUZZ2DjBuinGWPgwsDLFCAufBLqJ8RU+DXQ21OgKXwgsTzG2wpcCj1O8nsJGVvjgMNE0xbgKX5zgeYqXxKgKX57geYrnDTWmwhYTvJtiRIUtA3/fbuIpbB14mWI0hR0Cz1OMpbBT4CkxiaOwY+BpQ42isNVhwk283hJc2HmC5Va5hf8xwTgK/UxQcKGvQLGF3gKlFvoLFFroMVBmoc9AkYWeDhNyC1Xh9aJLeYV+Jyiw0Os+KLHQe6C0Qv+BwgoDBMoqDBEoqtCECJRUOPz2e5gQV2jnYa7qllOYBvr5CEGFgVBIIYXPmJ/ghZueZ+hexOWd+w3q9ycuwg5R2377DsapDflbX7rTFah+TbajQSij/aT/wNNF26FUvoELAAAAAAAAAAAAAAAAAAAAAAAAAAAA4G/4B9L3P1vg3y4/AAAAAElFTkSuQmCC",
+            fit: BoxFit.cover,
+            height: 100,
+            width: double.infinity,
           ),
         ),
+        const SizedBox(height: 8.0),
+        // Cuisine en plus petit et italique
+        Text(
+          'Cuisine: ${restaurant.cuisines?.join(', ') ?? 'N/A'}',
+          style: const TextStyle(
+            fontSize: 12.0, // Plus petit
+            fontStyle: FontStyle.italic, // Italique
+          ),
+        ),
+        const SizedBox(height: 4.0),
+        // Rating en semi-gras
+        Text(
+          'Rating: ${restaurant.rating ?? 'N/A'}',
+          style: const TextStyle(
+            fontWeight: FontWeight.w600, // Semi-bold
+          ),
+        ),
+        // Price en semi-gras
+        Text(
+          'Price: ${restaurant.priceRange ?? 'N/A'}',
+          style: const TextStyle(
+            fontWeight: FontWeight.w600, // Semi-bold
+          ),
+        ),
+        const SizedBox(height: 8.0),
+        // Bouton "Close"
+        TextButton(
+          onPressed: () {
+            _popupOverlayEntry?.remove();
+            _popupOverlayEntry = null;
+          },
+          child: const Text('Close'),
+        ),
+      ],
+    ),
+  ),
+),
+
       ),
     );
     Overlay.of(context).insert(_popupOverlayEntry!);
