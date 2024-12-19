@@ -12,13 +12,14 @@ class RestaurantPage extends StatefulWidget {
   State<RestaurantPage> createState() => _RestaurantPageState();
 }
 
-class _RestaurantPageState extends State<RestaurantPage> { 
+class _RestaurantPageState extends State<RestaurantPage> {
   final TextEditingController _searchController = TextEditingController();
   Timer? _debounce;
   String _searchQuery = '';
   List<String> _selectedCuisines = [];
   List<String> _allCuisines = [];
-  Key _dropdownKey = GlobalKey(); // Add this line at the top with other variables
+  Key _dropdownKey =
+      GlobalKey(); // Add this line at the top with other variables
 
   @override
   void dispose() {
@@ -39,7 +40,8 @@ class _RestaurantPageState extends State<RestaurantPage> {
 
   Future<List<Restaurant>> fetchRestaurants(CookieRequest request) async {
     try {
-      final response = await request.get('https://denpasar-food.vercel.app/json/');
+      final response =
+          await request.get('https://denpasar-food.vercel.app/json/');
       List<Restaurant> listRestaurant = [];
 
       if (response is List) {
@@ -57,15 +59,23 @@ class _RestaurantPageState extends State<RestaurantPage> {
       if (_searchQuery.isNotEmpty || _selectedCuisines.isNotEmpty) {
         listRestaurant = listRestaurant.where((restaurant) {
           bool matchesSearch = _searchQuery.isEmpty ||
-              (restaurant.name?.toLowerCase().contains(_searchQuery.toLowerCase()) ?? false) ||
-              (restaurant.description != null && 
-                restaurant.description!.toLowerCase().contains(_searchQuery.toLowerCase())) ||
-              (restaurant.address != null && 
-                restaurant.address!.toLowerCase().contains(_searchQuery.toLowerCase()));
+              (restaurant.name
+                      ?.toLowerCase()
+                      .contains(_searchQuery.toLowerCase()) ??
+                  false) ||
+              (restaurant.description != null &&
+                  restaurant.description!
+                      .toLowerCase()
+                      .contains(_searchQuery.toLowerCase())) ||
+              (restaurant.address != null &&
+                  restaurant.address!
+                      .toLowerCase()
+                      .contains(_searchQuery.toLowerCase()));
 
           bool matchesCuisine = _selectedCuisines.isEmpty ||
-              (restaurant.cuisines?.any((cuisine) => 
-                _selectedCuisines.contains(cuisine)) ?? false);
+              (restaurant.cuisines
+                      ?.any((cuisine) => _selectedCuisines.contains(cuisine)) ??
+                  false);
 
           return matchesSearch && matchesCuisine;
         }).toList();
@@ -101,25 +111,39 @@ class _RestaurantPageState extends State<RestaurantPage> {
 
   String? getTodayClosingTime(Restaurant restaurant) {
     if (restaurant.openHours == null) return null;
-    
+
     final now = DateTime.now();
     final days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
     final todayKey = days[now.weekday - 1];
-    
+
     List<Fri>? todayHours;
     switch (todayKey) {
-      case 'mon': todayHours = restaurant.openHours?.mon; break;
-      case 'tue': todayHours = restaurant.openHours?.tue; break;
-      case 'wed': todayHours = restaurant.openHours?.wed; break;
-      case 'thu': todayHours = restaurant.openHours?.thu; break;
-      case 'fri': todayHours = restaurant.openHours?.fri; break;
-      case 'sat': todayHours = restaurant.openHours?.sat; break;
-      case 'sun': todayHours = restaurant.openHours?.sun; break;
+      case 'mon':
+        todayHours = restaurant.openHours?.mon;
+        break;
+      case 'tue':
+        todayHours = restaurant.openHours?.tue;
+        break;
+      case 'wed':
+        todayHours = restaurant.openHours?.wed;
+        break;
+      case 'thu':
+        todayHours = restaurant.openHours?.thu;
+        break;
+      case 'fri':
+        todayHours = restaurant.openHours?.fri;
+        break;
+      case 'sat':
+        todayHours = restaurant.openHours?.sat;
+        break;
+      case 'sun':
+        todayHours = restaurant.openHours?.sun;
+        break;
     }
-    
+
     final closeTime = todayHours?.firstOrNull?.close;
     if (closeTime == null) return null;
-        final timeParts = closeTime.split(':');
+    final timeParts = closeTime.split(':');
     if (timeParts.length >= 2) {
       return '${timeParts[0]}:${timeParts[1]}';
     }
@@ -128,25 +152,39 @@ class _RestaurantPageState extends State<RestaurantPage> {
 
   String? getTodayOpeningTime(Restaurant restaurant) {
     if (restaurant.openHours == null) return null;
-    
+
     final now = DateTime.now();
     final days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
     final todayKey = days[now.weekday - 1];
-    
+
     List<Fri>? todayHours;
     switch (todayKey) {
-      case 'mon': todayHours = restaurant.openHours?.mon; break;
-      case 'tue': todayHours = restaurant.openHours?.tue; break;
-      case 'wed': todayHours = restaurant.openHours?.wed; break;
-      case 'thu': todayHours = restaurant.openHours?.thu; break;
-      case 'fri': todayHours = restaurant.openHours?.fri; break;
-      case 'sat': todayHours = restaurant.openHours?.sat; break;
-      case 'sun': todayHours = restaurant.openHours?.sun; break;
+      case 'mon':
+        todayHours = restaurant.openHours?.mon;
+        break;
+      case 'tue':
+        todayHours = restaurant.openHours?.tue;
+        break;
+      case 'wed':
+        todayHours = restaurant.openHours?.wed;
+        break;
+      case 'thu':
+        todayHours = restaurant.openHours?.thu;
+        break;
+      case 'fri':
+        todayHours = restaurant.openHours?.fri;
+        break;
+      case 'sat':
+        todayHours = restaurant.openHours?.sat;
+        break;
+      case 'sun':
+        todayHours = restaurant.openHours?.sun;
+        break;
     }
-    
+
     final openTime = todayHours?.firstOrNull?.open;
     if (openTime == null) return null;
-    
+
     final timeParts = openTime.split(':');
     if (timeParts.length >= 2) {
       return '${timeParts[0]}:${timeParts[1]}';
@@ -209,8 +247,10 @@ class _RestaurantPageState extends State<RestaurantPage> {
                                     value: isSelected,
                                     activeColor: Theme.of(context).primaryColor,
                                     checkColor: Colors.white,
-                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                    onChanged: (bool? checked) => _toggleCuisine(cuisine),
+                                    materialTapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    onChanged: (bool? checked) =>
+                                        _toggleCuisine(cuisine),
                                   ),
                                 ),
                               ),
@@ -235,16 +275,20 @@ class _RestaurantPageState extends State<RestaurantPage> {
                     child: Wrap(
                       spacing: 8,
                       runSpacing: 8, // Add vertical spacing between rows
-                      children: _selectedCuisines.map((cuisine) => Chip(
-                        label: Text(cuisine),
-                        onDeleted: () {
-                          setState(() {
-                            _selectedCuisines.remove(cuisine);
-                          });
-                        },
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        labelPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                      )).toList(),
+                      children: _selectedCuisines
+                          .map((cuisine) => Chip(
+                                label: Text(cuisine),
+                                onDeleted: () {
+                                  setState(() {
+                                    _selectedCuisines.remove(cuisine);
+                                  });
+                                },
+                                materialTapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
+                                labelPadding:
+                                    const EdgeInsets.symmetric(horizontal: 4.0),
+                              ))
+                          .toList(),
                     ),
                   ),
               ],
@@ -270,7 +314,8 @@ class _RestaurantPageState extends State<RestaurantPage> {
                 return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (_, index) => Card(
-                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -279,7 +324,8 @@ class _RestaurantPageState extends State<RestaurantPage> {
                             top: Radius.circular(4),
                           ),
                           child: Image.network(
-                            snapshot.data[index].imageUrl ?? 'https://via.placeholder.com/150',
+                            snapshot.data[index].imageUrl ??
+                                'https://via.placeholder.com/150',
                             height: 200,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
@@ -304,7 +350,8 @@ class _RestaurantPageState extends State<RestaurantPage> {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                snapshot.data[index].cuisines?.join(", ") ?? 'Cuisine not specified',
+                                snapshot.data[index].cuisines?.join(", ") ??
+                                    'Cuisine not specified',
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
@@ -318,7 +365,9 @@ class _RestaurantPageState extends State<RestaurantPage> {
                                   Icon(
                                     Icons.circle,
                                     size: 12,
-                                    color: snapshot.data[index].isOpen == true ? Colors.green : Colors.red,
+                                    color: snapshot.data[index].isOpen == true
+                                        ? Colors.green
+                                        : Colors.red,
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
@@ -326,7 +375,9 @@ class _RestaurantPageState extends State<RestaurantPage> {
                                         ? "Open · Closes at ${getTodayClosingTime(snapshot.data[index]) ?? 'N/A'}"
                                         : "Closed · Opens at ${getTodayOpeningTime(snapshot.data[index]) ?? 'N/A'}",
                                     style: TextStyle(
-                                      color: snapshot.data[index].isOpen == true ? Colors.green : Colors.red,
+                                      color: snapshot.data[index].isOpen == true
+                                          ? Colors.green
+                                          : Colors.red,
                                     ),
                                   ),
                                 ],
@@ -335,9 +386,11 @@ class _RestaurantPageState extends State<RestaurantPage> {
                               Row(
                                 children: [
                                   const Icon(Icons.star, color: Colors.amber),
-                                  Text(" ${snapshot.data[index].rating ?? 'N/A'}"),
+                                  Text(
+                                      " ${snapshot.data[index].rating ?? 'N/A'}"),
                                   const SizedBox(width: 20),
-                                  Text("Price: ${snapshot.data[index].priceRange ?? 'Not specified'}"),
+                                  Text(
+                                      "Price: ${snapshot.data[index].priceRange ?? 'Not specified'}"),
                                 ],
                               ),
                               const SizedBox(height: 8),

@@ -38,7 +38,6 @@ class Restaurant {
   List<String>? diningOptions;
   List<dynamic>? ownerTypes;
   List<String>? topTags;
-  
 
   Restaurant({
     this.id,
@@ -82,24 +81,46 @@ class Restaurant {
         phone: json["phone"],
         website: json["website"],
         imageUrl: json["image_url"],
-        ranking: json["ranking"] != null ? Ranking.fromJson(json["ranking"]) : null,
+        ranking:
+            json["ranking"] != null ? Ranking.fromJson(json["ranking"]) : null,
         address: json['address']?.toString() ?? 'No address',
-        detailedAddress: json["detailed_address"] != null ? DetailedAddress.fromJson(json["detailed_address"]) : null,
+        detailedAddress: json["detailed_address"] != null
+            ? DetailedAddress.fromJson(json["detailed_address"])
+            : null,
         latitude: json["latitude"]?.toDouble(),
         longitude: json["longitude"]?.toDouble(),
-        reviewsPerRating: json["reviews_per_rating"] != null ? Map.from(json["reviews_per_rating"]).map((k, v) => MapEntry<String, int>(k, v)) : null,
-        reviewKeywords: json["review_keywords"] != null ? List<String>.from(json["review_keywords"].map((x) => x)) : null,
+        reviewsPerRating: json["reviews_per_rating"] != null
+            ? Map.from(json["reviews_per_rating"])
+                .map((k, v) => MapEntry<String, int>(k, v))
+            : null,
+        reviewKeywords: json["review_keywords"] != null
+            ? List<String>.from(json["review_keywords"].map((x) => x))
+            : null,
         isOpen: json["is_open"],
-        openHours: json["open_hours"] != null ? OpenHours.fromJson(json["open_hours"]) : null,
+        openHours: json["open_hours"] != null
+            ? OpenHours.fromJson(json["open_hours"])
+            : null,
         menuLink: json["menu_link"],
         deliveryUrl: json["delivery_url"],
         priceRange: json['price_range']?.toString() ?? 'Not specified',
-        cuisines: json["cuisines"] != null ? List<String>.from(json["cuisines"].map((x) => x)) : null,
-        diets: json["diets"] != null ? List<String>.from(json["diets"].map((x) => x)) : null,
-        mealTypes: json["meal_types"] != null ? List<String>.from(json["meal_types"].map((x) => x)) : null,
-        diningOptions: json["dining_options"] != null ? List<String>.from(json["dining_options"].map((x) => x)) : null,
-        ownerTypes: json["owner_types"] != null ? List<dynamic>.from(json["owner_types"].map((x) => x)) : null,
-        topTags: json["top_tags"] != null ? List<String>.from(json["top_tags"].map((x) => x)) : null,
+        cuisines: json["cuisines"] != null
+            ? List<String>.from(json["cuisines"].map((x) => x))
+            : null,
+        diets: json["diets"] != null
+            ? List<String>.from(json["diets"].map((x) => x))
+            : null,
+        mealTypes: json["meal_types"] != null
+            ? List<String>.from(json["meal_types"].map((x) => x))
+            : null,
+        diningOptions: json["dining_options"] != null
+            ? List<String>.from(json["dining_options"].map((x) => x))
+            : null,
+        ownerTypes: json["owner_types"] != null
+            ? List<dynamic>.from(json["owner_types"].map((x) => x))
+            : null,
+        topTags: json["top_tags"] != null
+            ? List<String>.from(json["top_tags"].map((x) => x))
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -118,19 +139,34 @@ class Restaurant {
         "detailed_address": detailedAddress?.toJson(),
         "latitude": latitude,
         "longitude": longitude,
-        "reviews_per_rating": reviewsPerRating != null ? Map.from(reviewsPerRating!).map((k, v) => MapEntry<String, dynamic>(k, v)) : null,
-        "review_keywords": reviewKeywords != null ? List<dynamic>.from(reviewKeywords!.map((x) => x)) : null,
+        "reviews_per_rating": reviewsPerRating != null
+            ? Map.from(reviewsPerRating!)
+                .map((k, v) => MapEntry<String, dynamic>(k, v))
+            : null,
+        "review_keywords": reviewKeywords != null
+            ? List<dynamic>.from(reviewKeywords!.map((x) => x))
+            : null,
         "is_open": isOpen,
         "open_hours": openHours?.toJson(),
         "menu_link": menuLink,
         "delivery_url": deliveryUrl,
         "price_range": priceRange,
-        "cuisines": cuisines != null ? List<dynamic>.from(cuisines!.map((x) => x)) : null,
-        "diets": diets != null ? List<dynamic>.from(diets!.map((x) => x)) : null,
-        "meal_types": mealTypes != null ? List<dynamic>.from(mealTypes!.map((x) => x)) : null,
-        "dining_options": diningOptions != null ? List<dynamic>.from(diningOptions!.map((x) => x)) : null,
-        "owner_types": ownerTypes != null ? List<dynamic>.from(ownerTypes!.map((x) => x)) : null,
-        "top_tags": topTags != null ? List<dynamic>.from(topTags!.map((x) => x)) : null,
+        "cuisines": cuisines != null
+            ? List<dynamic>.from(cuisines!.map((x) => x))
+            : null,
+        "diets":
+            diets != null ? List<dynamic>.from(diets!.map((x) => x)) : null,
+        "meal_types": mealTypes != null
+            ? List<dynamic>.from(mealTypes!.map((x) => x))
+            : null,
+        "dining_options": diningOptions != null
+            ? List<dynamic>.from(diningOptions!.map((x) => x))
+            : null,
+        "owner_types": ownerTypes != null
+            ? List<dynamic>.from(ownerTypes!.map((x) => x))
+            : null,
+        "top_tags":
+            topTags != null ? List<dynamic>.from(topTags!.map((x) => x)) : null,
       };
 }
 
@@ -187,23 +223,51 @@ class OpenHours {
   });
 
   factory OpenHours.fromJson(Map<String, dynamic> json) => OpenHours(
-        sun: json["sun"] != null ? List<Fri>.from(json["sun"].map((x) => Fri.fromJson(x))) : null,
-        mon: json["mon"] != null ? List<Fri>.from(json["mon"].map((x) => Fri.fromJson(x))) : null,
-        tue: json["tue"] != null ? List<Fri>.from(json["tue"].map((x) => Fri.fromJson(x))) : null,
-        wed: json["wed"] != null ? List<Fri>.from(json["wed"].map((x) => Fri.fromJson(x))) : null,
-        thu: json["thu"] != null ? List<Fri>.from(json["thu"].map((x) => Fri.fromJson(x))) : null,
-        fri: json["fri"] != null ? List<Fri>.from(json["fri"].map((x) => Fri.fromJson(x))) : null,
-        sat: json["sat"] != null ? List<Fri>.from(json["sat"].map((x) => Fri.fromJson(x))) : null,
+        sun: json["sun"] != null
+            ? List<Fri>.from(json["sun"].map((x) => Fri.fromJson(x)))
+            : null,
+        mon: json["mon"] != null
+            ? List<Fri>.from(json["mon"].map((x) => Fri.fromJson(x)))
+            : null,
+        tue: json["tue"] != null
+            ? List<Fri>.from(json["tue"].map((x) => Fri.fromJson(x)))
+            : null,
+        wed: json["wed"] != null
+            ? List<Fri>.from(json["wed"].map((x) => Fri.fromJson(x)))
+            : null,
+        thu: json["thu"] != null
+            ? List<Fri>.from(json["thu"].map((x) => Fri.fromJson(x)))
+            : null,
+        fri: json["fri"] != null
+            ? List<Fri>.from(json["fri"].map((x) => Fri.fromJson(x)))
+            : null,
+        sat: json["sat"] != null
+            ? List<Fri>.from(json["sat"].map((x) => Fri.fromJson(x)))
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
-        "sun": sun != null ? List<dynamic>.from(sun!.map((x) => x.toJson())) : null,
-        "mon": mon != null ? List<dynamic>.from(mon!.map((x) => x.toJson())) : null,
-        "tue": tue != null ? List<dynamic>.from(tue!.map((x) => x.toJson())) : null,
-        "wed": wed != null ? List<dynamic>.from(wed!.map((x) => x.toJson())) : null,
-        "thu": thu != null ? List<dynamic>.from(thu!.map((x) => x.toJson())) : null,
-        "fri": fri != null ? List<dynamic>.from(fri!.map((x) => x.toJson())) : null,
-        "sat": sat != null ? List<dynamic>.from(sat!.map((x) => x.toJson())) : null,
+        "sun": sun != null
+            ? List<dynamic>.from(sun!.map((x) => x.toJson()))
+            : null,
+        "mon": mon != null
+            ? List<dynamic>.from(mon!.map((x) => x.toJson()))
+            : null,
+        "tue": tue != null
+            ? List<dynamic>.from(tue!.map((x) => x.toJson()))
+            : null,
+        "wed": wed != null
+            ? List<dynamic>.from(wed!.map((x) => x.toJson()))
+            : null,
+        "thu": thu != null
+            ? List<dynamic>.from(thu!.map((x) => x.toJson()))
+            : null,
+        "fri": fri != null
+            ? List<dynamic>.from(fri!.map((x) => x.toJson()))
+            : null,
+        "sat": sat != null
+            ? List<dynamic>.from(sat!.map((x) => x.toJson()))
+            : null,
       };
 }
 
