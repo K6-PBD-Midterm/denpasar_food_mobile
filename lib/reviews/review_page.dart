@@ -14,7 +14,7 @@ class ReviewPage extends StatefulWidget {
 }
 
 class _ReviewPageState extends State<ReviewPage> {
-  double _rating = 3.0; // Default star rating
+  double _rating = 0.0; // Default star rating
   final TextEditingController _commentController = TextEditingController();
   bool _isLoading = false;
 

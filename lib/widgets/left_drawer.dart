@@ -3,6 +3,8 @@ import 'package:denpasar_food_mobile/screens/map_page.dart';
 import 'package:denpasar_food_mobile/admin_dashboard/admin_restaurant_list_page.dart'; // Import the admin page
 import 'package:denpasar_food_mobile/restaurant_list/restaurant_list.dart'; // Import the RestaurantPage
 import 'package:denpasar_food_mobile/reviews/liked_restaurant.dart'; // Import the LikedRestaurantsPage
+import 'package:denpasar_food_mobile/authentication/login.dart'; // Import the LoginPage
+import 'package:denpasar_food_mobile/authentication/register.dart'; // Import the RegisterPage
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -13,10 +15,10 @@ class LeftDrawer extends StatelessWidget {
       child: ListView(
         children: [
           DrawerHeader(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
             ),
-            child: Text(
+            child: const Text(
               "Restaurants in Denpasar",
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -27,22 +29,30 @@ class LeftDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.login, color: Colors.black),
+            leading: const Icon(Icons.login, color: Colors.black),
             title: const Text("Login"),
             onTap: () {
-              // Add your login navigation or logic here
+              // Navigate to LoginPage
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+              );
             },
           ),
           ListTile(
-            leading: Icon(Icons.app_registration, color: Colors.black),
+            leading: const Icon(Icons.app_registration, color: Colors.black),
             title: const Text("Register"),
             onTap: () {
-              // Add your register navigation or logic here
+              // Navigate to RegisterPage
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const RegisterPage()),
+              );
             },
           ),
           const Divider(),
           ListTile(
-            leading: Icon(Icons.home, color: Colors.black),
+            leading: const Icon(Icons.home, color: Colors.black),
             title: const Text("Restaurant List"),
             onTap: () {
               Navigator.push(
@@ -52,7 +62,7 @@ class LeftDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.map, color: Colors.black),
+            leading: const Icon(Icons.map, color: Colors.black),
             title: const Text("Map"),
             onTap: () {
               Navigator.push(
@@ -62,7 +72,7 @@ class LeftDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.bookmark, color: Colors.black),
+            leading: const Icon(Icons.bookmark, color: Colors.black),
             title: const Text("Liked Restaurants"),
             onTap: () {
               Navigator.push(
@@ -73,7 +83,7 @@ class LeftDrawer extends StatelessWidget {
           ),
           const Divider(),
           ListTile(
-            leading: Icon(Icons.person, color: Colors.black), // User icon for Admin Dashboard
+            leading: const Icon(Icons.person, color: Colors.black), // User icon for Admin Dashboard
             title: const Text("Admin Dashboard"),
             onTap: () {
               Navigator.push(
