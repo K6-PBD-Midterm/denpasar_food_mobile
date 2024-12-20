@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:denpasar_food_mobile/screens/map_page.dart';
+import 'package:denpasar_food_mobile/admin_dashboard/admin_restaurant_list_page.dart'; // Import the admin page
+import 'package:denpasar_food_mobile/restaurant_list/restaurant_list.dart'; // Import the RestaurantPage
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -26,18 +28,27 @@ class LeftDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.login, color: Colors.black),
             title: const Text("Login"),
-            onTap: () {},
+            onTap: () {
+              // Add your login navigation or logic here
+            },
           ),
           ListTile(
             leading: Icon(Icons.app_registration, color: Colors.black),
             title: const Text("Register"),
-            onTap: () {},
+            onTap: () {
+              // Add your register navigation or logic here
+            },
           ),
-          Divider(),
+          const Divider(),
           ListTile(
             leading: Icon(Icons.home, color: Colors.black),
             title: const Text("Restaurant List"),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const RestaurantPage()),
+              );
+            },
           ),
           ListTile(
             leading: Icon(Icons.map, color: Colors.black),
@@ -53,6 +64,16 @@ class LeftDrawer extends StatelessWidget {
             leading: Icon(Icons.bookmark, color: Colors.black),
             title: const Text("Liked Restaurants"),
             onTap: () {},
+          ),
+          const Divider(),
+          ListTile(
+            title: const Text("Admin Dashboard"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AdminRestaurantListPage()),
+              );
+            },
           ),
         ],
       ),
