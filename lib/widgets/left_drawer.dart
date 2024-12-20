@@ -11,7 +11,10 @@ class LeftDrawer extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: [
-          const DrawerHeader(
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
             child: Text(
               "Restaurants in Denpasar",
               textAlign: TextAlign.center,
@@ -23,12 +26,14 @@ class LeftDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
+            leading: Icon(Icons.login, color: Colors.black),
             title: const Text("Login"),
             onTap: () {
               // Add your login navigation or logic here
             },
           ),
           ListTile(
+            leading: Icon(Icons.app_registration, color: Colors.black),
             title: const Text("Register"),
             onTap: () {
               // Add your register navigation or logic here
@@ -36,6 +41,7 @@ class LeftDrawer extends StatelessWidget {
           ),
           const Divider(),
           ListTile(
+            leading: Icon(Icons.home, color: Colors.black),
             title: const Text("Restaurant List"),
             onTap: () {
               Navigator.push(
@@ -45,6 +51,7 @@ class LeftDrawer extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: Icon(Icons.map, color: Colors.black),
             title: const Text("Map"),
             onTap: () {
               Navigator.push(
@@ -52,6 +59,11 @@ class LeftDrawer extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => const MapPage()),
               );
             },
+          ),
+          ListTile(
+            leading: Icon(Icons.bookmark, color: Colors.black),
+            title: const Text("Liked Restaurants"),
+            onTap: () {},
           ),
           const Divider(),
           ListTile(
