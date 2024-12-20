@@ -10,6 +10,9 @@ class LeftDrawer extends StatelessWidget {
       child: ListView(
         children: [
           DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
             child: Text(
               "Restaurants in Denpasar",
               textAlign: TextAlign.center,
@@ -21,19 +24,23 @@ class LeftDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
+            leading: Icon(Icons.login, color: Colors.black),
             title: const Text("Login"),
             onTap: () {},
           ),
           ListTile(
+            leading: Icon(Icons.app_registration, color: Colors.black),
             title: const Text("Register"),
             onTap: () {},
           ),
           Divider(),
           ListTile(
+            leading: Icon(Icons.home, color: Colors.black),
             title: const Text("Restaurant List"),
             onTap: () {},
           ),
           ListTile(
+            leading: Icon(Icons.map, color: Colors.black),
             title: const Text("Map"),
             onTap: () {
               Navigator.push(
@@ -41,6 +48,11 @@ class LeftDrawer extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => const MapPage()),
               );
             },
+          ),
+          ListTile(
+            leading: Icon(Icons.bookmark, color: Colors.black),
+            title: const Text("Liked Restaurants"),
+            onTap: () {},
           ),
         ],
       ),
