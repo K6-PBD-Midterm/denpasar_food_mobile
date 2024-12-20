@@ -11,6 +11,14 @@ class RestaurantPage extends StatefulWidget {
 
   @override
   State<RestaurantPage> createState() => _RestaurantPageState();
+
+  //////////////////////// bonbon: Static helper function to fetch restaurants ////////////////////////
+  static Future<List<Restaurant>> fetchRestaurantsStatic(BuildContext context) async {
+    final request = Provider.of<CookieRequest>(context, listen: false);
+    final restaurantPageState = _RestaurantPageState(); // Create an instance of _RestaurantPageState
+    return await restaurantPageState.fetchRestaurants(request);
+  }
+  //////////////////////// bonbon: Static helper function to fetch restaurants ////////////////////////
 }
 
 class _RestaurantPageState extends State<RestaurantPage> {
