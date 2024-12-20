@@ -279,12 +279,10 @@ class _RestaurantPageState extends State<RestaurantPage> {
                 }
                 return ListView.builder(
                   itemCount: snapshot.data.length,
-                  itemBuilder: (_, index) => 
-                  Card(
+                  itemBuilder: (_, index) => Card(
                     margin: const EdgeInsets.symmetric(
-                    horizontal: 16, vertical: 12),
-                    color: const Color(0xFF854158),
-                    elevation: 8.0,
+                        horizontal: 16, vertical: 12),
+                    color: const Color(0xFF5C2A3C),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
@@ -308,109 +306,51 @@ class _RestaurantPageState extends State<RestaurantPage> {
                                           style: const TextStyle(
                                             fontSize: 20.0,
                                             fontWeight: FontWeight.bold,
-                                            color:  Color(0xFFF6D078),
-                                            shadows: [
-                                              Shadow(
-                                                offset: Offset(2.0, 2.0),
-                                                blurRadius: 3.0,
-                                                color: Color.fromARGB(128, 0, 0, 0),
-                                              ),
-                                            ],
+                                            color: Colors.white,
                                           ),
                                         ),
-                                        const SizedBox(height: 10),
+                                        const SizedBox(height: 8),
 
                                         // Cuisine
-                                        snapshot.data[index].phone != null && 
-                                        snapshot.data[index].phone!.isNotEmpty 
-                                        ?
-                                         Row(
-                                          children: [
-                                            const Icon(
-                                              Icons.food_bank, // Icône d'épingle (vous pouvez choisir une autre icône si vous le souhaitez)
-                                              color: Color(0xFFD9D9D9),
-                                              size: 16.0,
-                                            ),
-                                            const SizedBox(width: 5.0), // Espacement entre l'icône et le texte
-                                            Expanded(
-                                              child: Text(
-                                                 "${snapshot.data[index].cuisines?.join(', ') ?? 'No cuisines information available :('}",
-                                                style: const TextStyle(
-                                                  fontSize: 14.0,
-                                                  color: Color(0xFFD9D9D9),
-                                                  height : 1.2,
-                                                  fontStyle: FontStyle.italic,
-                                                ),
-                                                softWrap: true,
-                                                overflow: TextOverflow.visible,
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                        : const SizedBox.shrink(),
+                                        Text(
+                                          "Cuisine: ${snapshot.data[index].cuisines?.join(', ') ?? 'N/A'}",
+                                          style: const TextStyle(
+                                            fontSize: 16.0,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
 
                                         // Address
-                                        /*Text(
+                                        Text(
                                           "Address: ${snapshot.data[index].address ?? 'N/A'}",
                                           style: const TextStyle(
                                             fontSize: 14.0,
                                             color: Colors.white,
                                           ),
-                                        ),*/
+                                        ),
                                         const SizedBox(height: 4),
 
                                         // Phone
-                                        snapshot.data[index].phone != null && 
-                                        snapshot.data[index].phone!.isNotEmpty 
-                                        ? Row(
-                                          children: [
-                                            const Icon(
-                                              Icons.phone, // Icône d'épingle (vous pouvez choisir une autre icône si vous le souhaitez)
-                                              color: Color(0xFFD9D9D9),
-                                              size: 16.0,
-                                            ),
-                                            const SizedBox(width: 4.0), // Espacement entre l'icône et le texte
-                                            Expanded(
-                                              child: Text(
-                                                "${snapshot.data[index].phone ?? "no phone available :("}",
-                                                style: const TextStyle(
-                                                  fontSize: 14.0,
-                                                  color: Color(0xFFD9D9D9),
-                                  
-                                                ),
-                                                softWrap: true,
-                                                overflow: TextOverflow.visible,
-                                              ),
-                                            ),
-                                          ],
-                                        ) : const SizedBox.shrink(),
-                                      const SizedBox(height: 4),
+                                        Text(
+                                          "Phone: ${snapshot.data[index].phone ?? 'N/A'}",
+                                          style: const TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+
                                         // Website
-                                         snapshot.data[index].website != null && 
-                                        snapshot.data[index].website!.isNotEmpty 
-                                        ? 
-                                       Row(
-                                          children: [
-                                            const Icon(
-                                              Icons.link, // Icône d'épingle (vous pouvez choisir une autre icône si vous le souhaitez)
-                                              color: Color.fromARGB(255, 170, 168, 205),
-                                              size: 16.0,
-                                            ),
-                                            const SizedBox(width: 4.0), // Espacement entre l'icône et le texte
-                                            Expanded(
-                                              child: Text(
-                                                "${snapshot.data[index].website ?? "no website available :("}",
-                                                style: const TextStyle(
-                                                  fontSize: 14.0,
-                                                  color: Color.fromARGB(255, 170, 168, 205),
-                                                  
-                                                ),
-                                                
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                          ],
-                                      ) : const SizedBox.shrink(),
+                                        Text(
+                                          "Website: ${snapshot.data[index].website ?? 'N/A'}",
+                                          style: const TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.white,
+                                            decoration:
+                                                TextDecoration.underline,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -456,7 +396,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
                                         content: Text(
                                           "You have liked ${snapshot.data[index].name ?? 'this restaurant'}",
                                           style: const TextStyle(
-                                              color: Color(0xFFD9D9D9)),
+                                              color: Colors.white),
                                         ),
                                         backgroundColor:
                                             const Color(0xFF5C2A3C),
@@ -465,7 +405,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
                                     );
                                   },
                                   icon: const Icon(Icons.favorite_border),
-                                  color: const Color(0xFFF6D078),
+                                  color: Colors.yellow,
                                 ),
                               ),
                             ],
@@ -487,13 +427,10 @@ class _RestaurantPageState extends State<RestaurantPage> {
                                   );
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFF6D078),
+                                  backgroundColor: const Color(0xFFFFC107),
                                 ),
-                                icon: const Icon(Icons.add,color: Colors.black,),
-                                label: const Text(
-                                  'Add a review',
-                                  style: TextStyle (color: Colors.black),
-                                  ),
+                                icon: const Icon(Icons.add),
+                                label: const Text('Add a review'),
                               ),
                               const SizedBox(width: 8),
                               ElevatedButton.icon(
@@ -507,10 +444,10 @@ class _RestaurantPageState extends State<RestaurantPage> {
                                   );
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFF6D078),
+                                  backgroundColor: const Color(0xFFFFC107),
                                 ),
-                                icon: const Icon(Icons.visibility,color: Colors.black,),
-                                label: const Text('View reviews',style: TextStyle(color: Colors.black),),
+                                icon: const Icon(Icons.visibility),
+                                label: const Text('View reviews'),
                               ),
                             ],
                           ),
