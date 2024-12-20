@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:denpasar_food_mobile/screens/map_page.dart';
 import 'package:denpasar_food_mobile/admin_dashboard/admin_restaurant_list_page.dart'; // Import the admin page
 import 'package:denpasar_food_mobile/restaurant_list/restaurant_list.dart'; // Import the RestaurantPage
+import 'package:denpasar_food_mobile/reviews/liked_restaurant.dart'; // Import the LikedRestaurantsPage
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -63,10 +64,16 @@ class LeftDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.bookmark, color: Colors.black),
             title: const Text("Liked Restaurants"),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LikedRestaurantsPage()),
+              );
+            },
           ),
           const Divider(),
           ListTile(
+            leading: Icon(Icons.person, color: Colors.black), // User icon for Admin Dashboard
             title: const Text("Admin Dashboard"),
             onTap: () {
               Navigator.push(

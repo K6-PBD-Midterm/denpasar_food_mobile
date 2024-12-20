@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'dart:async';
 import '../widgets/left_drawer.dart';
 import '../reviews/review_page.dart';
+import '../reviews/view_reviews.dart';
 
 class RestaurantPage extends StatefulWidget {
   const RestaurantPage({super.key});
@@ -232,91 +233,129 @@ class _RestaurantPageState extends State<RestaurantPage> {
                     ),
                   );
                 }
-
                 return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (_, index) => Card(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     color: const Color(0xFF5C2A3C),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
+                          Stack(
                             children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      snapshot.data[index].name ?? 'Restaurant Name',
-                                      style: const TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      "Cuisine: ${snapshot.data[index].cuisines?.join(', ') ?? 'N/A'}",
-                                      style: const TextStyle(
-                                        fontSize: 16.0,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      "Address: ${snapshot.data[index].address ?? 'N/A'}",
-                                      style: const TextStyle(
-                                        fontSize: 14.0,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      "Phone: ${snapshot.data[index].phone ?? 'N/A'}",
-                                      style: const TextStyle(
-                                        fontSize: 14.0,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      "Website: ${snapshot.data[index].website ?? 'N/A'}",
-                                      style: const TextStyle(
-                                        fontSize: 14.0,
-                                        color: Colors.white,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Container(
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: snapshot.data[index].imageUrl != null
-                                    ? ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: Image.network(
-                                          snapshot.data[index].imageUrl!,
-                                          fit: BoxFit.cover,
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        // Restaurant Name
+                                        Text(
+                                          snapshot.data[index].name ?? 'Restaurant Name',
+                                          style: const TextStyle(
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
                                         ),
-                                      )
-                                    : const Center(
-                                        child: Text('Picture not available'),
+                                        const SizedBox(height: 8),
+
+                                        // Cuisine
+                                        Text(
+                                          "Cuisine: ${snapshot.data[index].cuisines?.join(', ') ?? 'N/A'}",
+                                          style: const TextStyle(
+                                            fontSize: 16.0,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+
+                                        // Address
+                                        Text(
+                                          "Address: ${snapshot.data[index].address ?? 'N/A'}",
+                                          style: const TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+
+                                        // Phone
+                                        Text(
+                                          "Phone: ${snapshot.data[index].phone ?? 'N/A'}",
+                                          style: const TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+
+                                        // Website
+                                        Text(
+                                          "Website: ${snapshot.data[index].website ?? 'N/A'}",
+                                          style: const TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.white,
+                                            decoration: TextDecoration.underline,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+
+                                  // Restaurant Image
+                                  Container(
+                                    width: 100,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: snapshot.data[index].imageUrl != null
+                                        ? ClipRRect(
+                                            borderRadius: BorderRadius.circular(8),
+                                            child: Image.network(
+                                              snapshot.data[index].imageUrl!,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          )
+                                        : const Center(
+                                            child: Text('Picture not available'),
+                                          ),
+                                  ),
+                                ],
+                              ),
+
+                              // Heart Icon
+                              Positioned(
+                                top: 0,
+                                right: 0,
+                                child: IconButton(
+                                  onPressed: () {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          "You have liked ${snapshot.data[index].name ?? 'this restaurant'}",
+                                          style: const TextStyle(color: Colors.white),
+                                        ),
+                                        backgroundColor: const Color(0xFF5C2A3C),
+                                        duration: const Duration(seconds: 2),
                                       ),
+                                    );
+                                  },
+                                  icon: const Icon(Icons.favorite_border),
+                                  color: Colors.yellow,
+                                ),
                               ),
                             ],
                           ),
                           const SizedBox(height: 16),
+
+                          // Add Review and View Review Buttons
                           Row(
                             children: [
                               ElevatedButton.icon(
@@ -339,7 +378,12 @@ class _RestaurantPageState extends State<RestaurantPage> {
                               const SizedBox(width: 8),
                               ElevatedButton.icon(
                                 onPressed: () {
-                                  // View review functionality
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const ViewReviewsPage(),
+                                    ),
+                                  );
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFFFFC107),
