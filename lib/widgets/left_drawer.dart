@@ -60,6 +60,11 @@ class LeftDrawer extends StatelessWidget {
               );
             },
           ),
+          ListTile(
+            leading: Icon(Icons.bookmark, color: Colors.black),
+            title: const Text("Liked Restaurants"),
+            onTap: () {},
+          ),
           const Divider(),
           ListTile(
             title: const Text("Admin Dashboard"),
@@ -69,11 +74,6 @@ class LeftDrawer extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => const AdminRestaurantListPage()),
               );
             },
-          ),
-          ListTile(
-            leading: Icon(Icons.bookmark, color: Colors.black),
-            title: const Text("Liked Restaurants"),
-            onTap: () {},
           ),
         ],
       ),
