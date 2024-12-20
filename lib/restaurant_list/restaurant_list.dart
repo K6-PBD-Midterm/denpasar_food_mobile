@@ -4,21 +4,33 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
 import '../widgets/left_drawer.dart';
+import '../reviews/review_page.dart';
+import '../reviews/view_reviews.dart';
 
 class RestaurantPage extends StatefulWidget {
   const RestaurantPage({super.key});
 
   @override
   State<RestaurantPage> createState() => _RestaurantPageState();
+
+  //////////////////////// bonbon: Static helper function to fetch restaurants ////////////////////////
+  static Future<List<Restaurant>> fetchRestaurantsStatic(
+      BuildContext context) async {
+    final request = Provider.of<CookieRequest>(context, listen: false);
+    final restaurantPageState =
+        _RestaurantPageState(); // Create an instance of _RestaurantPageState
+    return await restaurantPageState.fetchRestaurants(request);
+  }
+  //////////////////////// bonbon: Static helper function to fetch restaurants ////////////////////////
 }
 
-class _RestaurantPageState extends State<RestaurantPage> { 
+class _RestaurantPageState extends State<RestaurantPage> {
   final TextEditingController _searchController = TextEditingController();
   Timer? _debounce;
   String _searchQuery = '';
   List<String> _selectedCuisines = [];
   List<String> _allCuisines = [];
-  Key _dropdownKey = GlobalKey(); // Add this line at the top with other variables
+  Key _dropdownKey = GlobalKey();
 
   @override
   void dispose() {
@@ -39,7 +51,8 @@ class _RestaurantPageState extends State<RestaurantPage> {
 
   Future<List<Restaurant>> fetchRestaurants(CookieRequest request) async {
     try {
-      final response = await request.get('https://denpasar-food.vercel.app/json/');
+      final response =
+          await request.get('https://denpasar-food.vercel.app/json/');
       List<Restaurant> listRestaurant = [];
 
       if (response is List) {
@@ -50,22 +63,28 @@ class _RestaurantPageState extends State<RestaurantPage> {
         }
       }
 
-      // Update all cuisines list
       _allCuisines = _extractUniqueCuisines(listRestaurant).toList()..sort();
 
-      // Filter restaurants based on search query and selected cuisines
       if (_searchQuery.isNotEmpty || _selectedCuisines.isNotEmpty) {
         listRestaurant = listRestaurant.where((restaurant) {
           bool matchesSearch = _searchQuery.isEmpty ||
-              (restaurant.name?.toLowerCase().contains(_searchQuery.toLowerCase()) ?? false) ||
-              (restaurant.description != null && 
-                restaurant.description!.toLowerCase().contains(_searchQuery.toLowerCase())) ||
-              (restaurant.address != null && 
-                restaurant.address!.toLowerCase().contains(_searchQuery.toLowerCase()));
+              (restaurant.name
+                      ?.toLowerCase()
+                      .contains(_searchQuery.toLowerCase()) ??
+                  false) ||
+              (restaurant.description != null &&
+                  restaurant.description!
+                      .toLowerCase()
+                      .contains(_searchQuery.toLowerCase())) ||
+              (restaurant.address != null &&
+                  restaurant.address!
+                      .toLowerCase()
+                      .contains(_searchQuery.toLowerCase()));
 
           bool matchesCuisine = _selectedCuisines.isEmpty ||
-              (restaurant.cuisines?.any((cuisine) => 
-                _selectedCuisines.contains(cuisine)) ?? false);
+              (restaurant.cuisines
+                      ?.any((cuisine) => _selectedCuisines.contains(cuisine)) ??
+                  false);
 
           return matchesSearch && matchesCuisine;
         }).toList();
@@ -73,7 +92,6 @@ class _RestaurantPageState extends State<RestaurantPage> {
 
       return listRestaurant;
     } catch (e) {
-      // Print error for debugging
       print('Error fetching restaurants: $e');
       throw Exception('Failed to load restaurants');
     }
@@ -97,61 +115,6 @@ class _RestaurantPageState extends State<RestaurantPage> {
       }
       _dropdownKey = GlobalKey();
     });
-  }
-
-  String? getTodayClosingTime(Restaurant restaurant) {
-    if (restaurant.openHours == null) return null;
-    
-    final now = DateTime.now();
-    final days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
-    final todayKey = days[now.weekday - 1];
-    
-    List<Fri>? todayHours;
-    switch (todayKey) {
-      case 'mon': todayHours = restaurant.openHours?.mon; break;
-      case 'tue': todayHours = restaurant.openHours?.tue; break;
-      case 'wed': todayHours = restaurant.openHours?.wed; break;
-      case 'thu': todayHours = restaurant.openHours?.thu; break;
-      case 'fri': todayHours = restaurant.openHours?.fri; break;
-      case 'sat': todayHours = restaurant.openHours?.sat; break;
-      case 'sun': todayHours = restaurant.openHours?.sun; break;
-    }
-    
-    final closeTime = todayHours?.firstOrNull?.close;
-    if (closeTime == null) return null;
-        final timeParts = closeTime.split(':');
-    if (timeParts.length >= 2) {
-      return '${timeParts[0]}:${timeParts[1]}';
-    }
-    return closeTime;
-  }
-
-  String? getTodayOpeningTime(Restaurant restaurant) {
-    if (restaurant.openHours == null) return null;
-    
-    final now = DateTime.now();
-    final days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
-    final todayKey = days[now.weekday - 1];
-    
-    List<Fri>? todayHours;
-    switch (todayKey) {
-      case 'mon': todayHours = restaurant.openHours?.mon; break;
-      case 'tue': todayHours = restaurant.openHours?.tue; break;
-      case 'wed': todayHours = restaurant.openHours?.wed; break;
-      case 'thu': todayHours = restaurant.openHours?.thu; break;
-      case 'fri': todayHours = restaurant.openHours?.fri; break;
-      case 'sat': todayHours = restaurant.openHours?.sat; break;
-      case 'sun': todayHours = restaurant.openHours?.sun; break;
-    }
-    
-    final openTime = todayHours?.firstOrNull?.open;
-    if (openTime == null) return null;
-    
-    final timeParts = openTime.split(':');
-    if (timeParts.length >= 2) {
-      return '${timeParts[0]}:${timeParts[1]}';
-    }
-    return openTime;
   }
 
   @override
@@ -185,12 +148,12 @@ class _RestaurantPageState extends State<RestaurantPage> {
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: DropdownButton<String>(
-                    key: _dropdownKey, // Add key here
+                    key: _dropdownKey,
                     isExpanded: true,
                     hint: const Text('Filter by cuisine'),
                     value: null,
-                    menuMaxHeight: 350, // Add maximum height
-                    dropdownColor: Theme.of(context).cardColor, // Match theme
+                    menuMaxHeight: 350,
+                    dropdownColor: Theme.of(context).cardColor,
                     items: _allCuisines.map((String cuisine) {
                       final isSelected = _selectedCuisines.contains(cuisine);
                       return DropdownMenuItem<String>(
@@ -209,8 +172,10 @@ class _RestaurantPageState extends State<RestaurantPage> {
                                     value: isSelected,
                                     activeColor: Theme.of(context).primaryColor,
                                     checkColor: Colors.white,
-                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                    onChanged: (bool? checked) => _toggleCuisine(cuisine),
+                                    materialTapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    onChanged: (bool? checked) =>
+                                        _toggleCuisine(cuisine),
                                   ),
                                 ),
                               ),
@@ -234,17 +199,21 @@ class _RestaurantPageState extends State<RestaurantPage> {
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Wrap(
                       spacing: 8,
-                      runSpacing: 8, // Add vertical spacing between rows
-                      children: _selectedCuisines.map((cuisine) => Chip(
-                        label: Text(cuisine),
-                        onDeleted: () {
-                          setState(() {
-                            _selectedCuisines.remove(cuisine);
-                          });
-                        },
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        labelPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                      )).toList(),
+                      runSpacing: 8,
+                      children: _selectedCuisines
+                          .map((cuisine) => Chip(
+                                label: Text(cuisine),
+                                onDeleted: () {
+                                  setState(() {
+                                    _selectedCuisines.remove(cuisine);
+                                  });
+                                },
+                                materialTapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
+                                labelPadding:
+                                    const EdgeInsets.symmetric(horizontal: 4.0),
+                              ))
+                          .toList(),
                     ),
                   ),
               ],
@@ -266,90 +235,177 @@ class _RestaurantPageState extends State<RestaurantPage> {
                     ),
                   );
                 }
-
                 return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (_, index) => Card(
-                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        ClipRRect(
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(4),
-                          ),
-                          child: Image.network(
-                            snapshot.data[index].imageUrl ?? 'https://via.placeholder.com/150',
-                            height: 200,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Container(
-                                height: 200,
-                                child: const Icon(Icons.broken_image),
-                              );
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    color: const Color(0xFF5C2A3C),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Stack(
                             children: [
-                              Text(
-                                snapshot.data[index].name ?? 'No name',
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                snapshot.data[index].cuisines?.join(", ") ?? 'Cuisine not specified',
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: Colors.grey[700],
-                                  fontSize: 14,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
                               Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Icon(
-                                    Icons.circle,
-                                    size: 12,
-                                    color: snapshot.data[index].isOpen == true ? Colors.green : Colors.red,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    snapshot.data[index].isOpen == true
-                                        ? "Open · Closes at ${getTodayClosingTime(snapshot.data[index]) ?? 'N/A'}"
-                                        : "Closed · Opens at ${getTodayOpeningTime(snapshot.data[index]) ?? 'N/A'}",
-                                    style: TextStyle(
-                                      color: snapshot.data[index].isOpen == true ? Colors.green : Colors.red,
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // Restaurant Name
+                                        Text(
+                                          snapshot.data[index].name ??
+                                              'Restaurant Name',
+                                          style: const TextStyle(
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+
+                                        // Cuisine
+                                        Text(
+                                          "Cuisine: ${snapshot.data[index].cuisines?.join(', ') ?? 'N/A'}",
+                                          style: const TextStyle(
+                                            fontSize: 16.0,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+
+                                        // Address
+                                        Text(
+                                          "Address: ${snapshot.data[index].address ?? 'N/A'}",
+                                          style: const TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+
+                                        // Phone
+                                        Text(
+                                          "Phone: ${snapshot.data[index].phone ?? 'N/A'}",
+                                          style: const TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+
+                                        // Website
+                                        Text(
+                                          "Website: ${snapshot.data[index].website ?? 'N/A'}",
+                                          style: const TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.white,
+                                            decoration:
+                                                TextDecoration.underline,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
+                                  const SizedBox(width: 16),
+
+                                  // Restaurant Image
+                                  Container(
+                                    width: 100,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: snapshot.data[index].imageUrl != null
+                                        ? ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            child: Image.network(
+                                              snapshot.data[index].imageUrl!,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          )
+                                        : const Center(
+                                            child:
+                                                Text('Picture not available'),
+                                          ),
+                                  ),
                                 ],
                               ),
-                              const SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  const Icon(Icons.star, color: Colors.amber),
-                                  Text(" ${snapshot.data[index].rating ?? 'N/A'}"),
-                                  const SizedBox(width: 20),
-                                  Text("Price: ${snapshot.data[index].priceRange ?? 'Not specified'}"),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                "Address: ${snapshot.data[index].address ?? 'No address'}",
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+
+                              // Heart Icon
+                              Positioned(
+                                top: 0,
+                                right: 0,
+                                child: IconButton(
+                                  onPressed: () {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          "You have liked ${snapshot.data[index].name ?? 'this restaurant'}",
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                        backgroundColor:
+                                            const Color(0xFF5C2A3C),
+                                        duration: const Duration(seconds: 2),
+                                      ),
+                                    );
+                                  },
+                                  icon: const Icon(Icons.favorite_border),
+                                  color: Colors.yellow,
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 16),
+
+                          // Add Review and View Review Buttons
+                          Row(
+                            children: [
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ReviewPage(
+                                        restaurantId: snapshot.data[index].id,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFFFFC107),
+                                ),
+                                icon: const Icon(Icons.add),
+                                label: const Text('Add a review'),
+                              ),
+                              const SizedBox(width: 8),
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ViewReviewsPage(),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFFFFC107),
+                                ),
+                                icon: const Icon(Icons.visibility),
+                                label: const Text('View reviews'),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );
