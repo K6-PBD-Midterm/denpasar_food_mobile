@@ -122,21 +122,62 @@ class _RestaurantPageState extends State<RestaurantPage> {
     final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Restaurants in Denpasar'),
+        backgroundColor: const Color(0xFF854158), // Couleur de la barre du haut
+        title: Text(
+          'Restaurants in Denpasar',
+          style: TextStyle(
+            color: const Color(0xFFF6D078), // Couleur du titre
+            fontSize: 21,
+            fontWeight: FontWeight.bold,
+            
+          ),
+          
+        ),
+        iconTheme: IconThemeData(
+        color: const Color(0xFFF6D078),
+         ), // Couleur de l'icône du menu hamburger
       ),
       drawer: const LeftDrawer(),
-      body: Column(
+
+      body: 
+      
+      Column(
         children: [
+          ClipRRect(
+             borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(16.0),
+              bottomRight: Radius.circular(16.0),
+            ),
+            child:
+            Image.asset('../../assets/background_list.png',
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: 100,),),
+          
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(top: 20.0, left: 8.0, right: 8.0, bottom: 8.0), 
             child: Column(
               children: [
-                TextField(
+                
+               TextField(
                   controller: _searchController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'Search restaurants...',
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.search),
+                    filled: true,
+                    fillColor: const Color(0x80F6D078), 
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16.0), 
+                      borderSide: const BorderSide(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16.0), 
+                      borderSide: const BorderSide(
+                        color: Colors.grey,
+                      ),
+                    ),
                   ),
                   onChanged: _onSearchChanged,
                 ),
@@ -145,7 +186,8 @@ class _RestaurantPageState extends State<RestaurantPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(12),
+                    color:  Color(0x80F6D078),
                   ),
                   child: DropdownButton<String>(
                     key: _dropdownKey,
@@ -171,7 +213,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
                                   child: Checkbox(
                                     value: isSelected,
                                     activeColor: Theme.of(context).primaryColor,
-                                    checkColor: Color(0xFFD9D9D9),
+                                    checkColor:  Color(0x80F6D078),
                                     materialTapTargetSize:
                                         MaterialTapTargetSize.shrinkWrap,
                                     onChanged: (bool? checked) =>
@@ -251,7 +293,8 @@ class _RestaurantPageState extends State<RestaurantPage> {
                           Stack(
                             children: [
                               Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                //crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
                                     child: Column(
@@ -374,14 +417,12 @@ class _RestaurantPageState extends State<RestaurantPage> {
                                   const SizedBox(width: 16),
 
                                   // Restaurant Image
-                                 
-                                    
-                                    Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children :[
+                                 Padding( 
+                                    padding: const EdgeInsets.only(top: 30),
+                                    child:
                                   Container(
-                                    width: 100,
-                                    height: 100,
+                                    width: 120,
+                                    height: 120,
                                     decoration: BoxDecoration(
                                       color: Colors.grey[300],
                                       borderRadius: BorderRadius.circular(8),
@@ -400,16 +441,14 @@ class _RestaurantPageState extends State<RestaurantPage> {
                                                 Text('Picture not available'),
                                           ),
                                   ),
-                                    ],
-                                  ),
-                                  
+                                 ),                             
                                 ],
                               ),
 
                               // Heart Icon
                               Positioned(
-                                top: 0,
-                                right: 0,
+                                top: -10,
+                                right: -10,
                                 child: IconButton(
                                   onPressed: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
