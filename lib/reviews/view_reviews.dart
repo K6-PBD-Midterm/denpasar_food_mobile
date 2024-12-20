@@ -5,29 +5,35 @@ class ViewReviewsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Dummy data for reviews
+    // Dummy data for reviews with usernames
     final List<Map<String, dynamic>> reviews = [
       {
+        'username': 'JohnDoe',
         'rating': 5,
-        'comment': 'Really kind service, will definietly come back',
+        'comment': 'Really kind service, will definitely come back',
       },
       {
+        'username': 'Jane.Smith',
         'rating': 3,
         'comment': 'Good food, but small portion for the price',
       },
       {
+        'username': 'SoloTraveller_',
         'rating': 4,
         'comment': 'The food was delicious, but the wait time was a bit long.',
       },
       {
+        'username': 'Edward_Kim',
         'rating': 5,
         'comment': 'Best restaurant in Denpasar! Highly recommend the burgers and fries.',
       },
       {
+        'username': 'KarenBrown',
         'rating': 2,
-        'comment': 'The ambiance was nice, but staff was unkind and bad service.',
+        'comment': '50/50 ambience, unkind staff, and bad service.',
       },
       {
+        'username': 'Agus',
         'rating': 4,
         'comment': 'Great for hangouts and appropriate for families!',
       },
@@ -51,6 +57,15 @@ class ViewReviewsPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text(
+                      '@${review['username']}', // Display username
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
                     Row(
                       children: List.generate(5, (starIndex) {
                         return Icon(
