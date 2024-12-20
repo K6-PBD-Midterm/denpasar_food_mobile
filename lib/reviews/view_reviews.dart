@@ -25,7 +25,8 @@ class ViewReviewsPage extends StatelessWidget {
       {
         'username': 'Edward_Kim',
         'rating': 5,
-        'comment': 'Best restaurant in Denpasar! Highly recommend the burgers and fries.',
+        'comment':
+            'Best restaurant in Denpasar! Highly recommend the burgers and fries.',
       },
       {
         'username': 'KarenBrown',

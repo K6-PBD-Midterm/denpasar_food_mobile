@@ -45,7 +45,9 @@ class _AdminUserListPageState extends State<AdminUserListPage> {
     final localUsers = await _localStorageService.getUsers();
     setState(() {
       _users = localUsers.where((user) {
-        return user.username.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+        return user.username
+                .toLowerCase()
+                .contains(_searchQuery.toLowerCase()) ||
             user.email.toLowerCase().contains(_searchQuery.toLowerCase());
       }).toList();
     });
@@ -108,21 +110,26 @@ class _AdminUserListPageState extends State<AdminUserListPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.person, color: Colors.black, size: 24),
+                    icon:
+                        const Icon(Icons.person, color: Colors.black, size: 24),
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => const AdminUserListPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const AdminUserListPage()),
                       );
                     },
                   ),
                   const SizedBox(height: 32),
                   IconButton(
-                    icon: const Icon(Icons.restaurant, color: Colors.black, size: 24),
+                    icon: const Icon(Icons.restaurant,
+                        color: Colors.black, size: 24),
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => const admin_restaurant.AdminRestaurantListPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const admin_restaurant
+                                .AdminRestaurantListPage()),
                       );
                     },
                   ),
@@ -164,7 +171,9 @@ class _AdminUserListPageState extends State<AdminUserListPage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const AdminUserFormPage()),
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const AdminUserFormPage()),
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -181,7 +190,8 @@ class _AdminUserListPageState extends State<AdminUserListPage> {
 
                   Expanded(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start, // Align contents to start (left)
+                      crossAxisAlignment: CrossAxisAlignment
+                          .start, // Align contents to start (left)
                       children: [
                         // ... your toolbar row, etc.
 
@@ -198,7 +208,9 @@ class _AdminUserListPageState extends State<AdminUserListPage> {
                                   label: SizedBox(
                                     width: _checkboxColumnWidth,
                                     child: Checkbox(
-                                      value: _selectedUserIds.length == _users.length && _users.isNotEmpty,
+                                      value: _selectedUserIds.length ==
+                                              _users.length &&
+                                          _users.isNotEmpty,
                                       onChanged: _selectAllUsers,
                                     ),
                                   ),
@@ -241,7 +253,8 @@ class _AdminUserListPageState extends State<AdminUserListPage> {
                                       SizedBox(
                                         width: _checkboxColumnWidth,
                                         child: Checkbox(
-                                          value: _selectedUserIds.contains(user.id),
+                                          value: _selectedUserIds
+                                              .contains(user.id),
                                           onChanged: (bool? checked) {
                                             _toggleUserSelection(user.id);
                                           },
@@ -263,23 +276,29 @@ class _AdminUserListPageState extends State<AdminUserListPage> {
                                         child: Row(
                                           children: [
                                             IconButton(
-                                              icon: const Icon(Icons.edit, color: Colors.blue),
+                                              icon: const Icon(Icons.edit,
+                                                  color: Colors.blue),
                                               onPressed: () {
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                    builder: (context) => AdminUserFormPage(user: user),
+                                                    builder: (context) =>
+                                                        AdminUserFormPage(
+                                                            user: user),
                                                   ),
                                                 );
                                               },
                                             ),
                                             IconButton(
-                                              icon: const Icon(Icons.delete, color: Colors.red),
+                                              icon: const Icon(Icons.delete,
+                                                  color: Colors.red),
                                               onPressed: () {
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                    builder: (context) => AdminUserDeletePage(user: user),
+                                                    builder: (context) =>
+                                                        AdminUserDeletePage(
+                                                            user: user),
                                                   ),
                                                 );
                                               },

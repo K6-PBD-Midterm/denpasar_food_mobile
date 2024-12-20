@@ -30,7 +30,8 @@ class AdminUserDeletePage extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () async {
                     final localStorageService = LocalStorageService();
-                    List<LocalUser> existingUsers = await localStorageService.getUsers();
+                    List<LocalUser> existingUsers =
+                        await localStorageService.getUsers();
                     existingUsers.removeWhere((u) => u.id == user.id);
                     await localStorageService.saveUsers(existingUsers);
                     Navigator.pushReplacement(

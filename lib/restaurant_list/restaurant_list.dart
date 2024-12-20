@@ -14,9 +14,11 @@ class RestaurantPage extends StatefulWidget {
   State<RestaurantPage> createState() => _RestaurantPageState();
 
   //////////////////////// bonbon: Static helper function to fetch restaurants ////////////////////////
-  static Future<List<Restaurant>> fetchRestaurantsStatic(BuildContext context) async {
+  static Future<List<Restaurant>> fetchRestaurantsStatic(
+      BuildContext context) async {
     final request = Provider.of<CookieRequest>(context, listen: false);
-    final restaurantPageState = _RestaurantPageState(); // Create an instance of _RestaurantPageState
+    final restaurantPageState =
+        _RestaurantPageState(); // Create an instance of _RestaurantPageState
     return await restaurantPageState.fetchRestaurants(request);
   }
   //////////////////////// bonbon: Static helper function to fetch restaurants ////////////////////////
@@ -236,7 +238,8 @@ class _RestaurantPageState extends State<RestaurantPage> {
                 return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (_, index) => Card(
-                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
                     color: const Color(0xFF5C2A3C),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -250,11 +253,13 @@ class _RestaurantPageState extends State<RestaurantPage> {
                                 children: [
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         // Restaurant Name
                                         Text(
-                                          snapshot.data[index].name ?? 'Restaurant Name',
+                                          snapshot.data[index].name ??
+                                              'Restaurant Name',
                                           style: const TextStyle(
                                             fontSize: 20.0,
                                             fontWeight: FontWeight.bold,
@@ -299,7 +304,8 @@ class _RestaurantPageState extends State<RestaurantPage> {
                                           style: const TextStyle(
                                             fontSize: 14.0,
                                             color: Colors.white,
-                                            decoration: TextDecoration.underline,
+                                            decoration:
+                                                TextDecoration.underline,
                                           ),
                                         ),
                                       ],
@@ -317,14 +323,16 @@ class _RestaurantPageState extends State<RestaurantPage> {
                                     ),
                                     child: snapshot.data[index].imageUrl != null
                                         ? ClipRRect(
-                                            borderRadius: BorderRadius.circular(8),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
                                             child: Image.network(
                                               snapshot.data[index].imageUrl!,
                                               fit: BoxFit.cover,
                                             ),
                                           )
                                         : const Center(
-                                            child: Text('Picture not available'),
+                                            child:
+                                                Text('Picture not available'),
                                           ),
                                   ),
                                 ],
@@ -340,9 +348,11 @@ class _RestaurantPageState extends State<RestaurantPage> {
                                       SnackBar(
                                         content: Text(
                                           "You have liked ${snapshot.data[index].name ?? 'this restaurant'}",
-                                          style: const TextStyle(color: Colors.white),
+                                          style: const TextStyle(
+                                              color: Colors.white),
                                         ),
-                                        backgroundColor: const Color(0xFF5C2A3C),
+                                        backgroundColor:
+                                            const Color(0xFF5C2A3C),
                                         duration: const Duration(seconds: 2),
                                       ),
                                     );
@@ -381,7 +391,8 @@ class _RestaurantPageState extends State<RestaurantPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const ViewReviewsPage(),
+                                      builder: (context) =>
+                                          const ViewReviewsPage(),
                                     ),
                                   );
                                 },

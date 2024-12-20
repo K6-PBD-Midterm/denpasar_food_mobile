@@ -32,7 +32,8 @@ class _AdminRestaurantListPageState extends State<AdminRestaurantListPage> {
 
   Future<void> _loadRestaurants() async {
     try {
-      final fetchedRestaurants = await RestaurantPage.fetchRestaurantsStatic(context); // Use the static helper function
+      final fetchedRestaurants = await RestaurantPage.fetchRestaurantsStatic(
+          context); // Use the static helper function
       await _localStorageService.saveRestaurants(fetchedRestaurants);
       _filterRestaurants();
     } catch (e) {
@@ -53,8 +54,13 @@ class _AdminRestaurantListPageState extends State<AdminRestaurantListPage> {
     final localRestaurants = await _localStorageService.getRestaurants();
     setState(() {
       _restaurants = localRestaurants.where((restaurant) {
-        return restaurant.name!.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-            (restaurant.address != null && restaurant.address!.toLowerCase().contains(_searchQuery.toLowerCase()));
+        return restaurant.name!
+                .toLowerCase()
+                .contains(_searchQuery.toLowerCase()) ||
+            (restaurant.address != null &&
+                restaurant.address!
+                    .toLowerCase()
+                    .contains(_searchQuery.toLowerCase()));
       }).toList();
     });
   }
@@ -133,7 +139,8 @@ class _AdminRestaurantListPageState extends State<AdminRestaurantListPage> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const AdminUserListPage()), // Use the imported class
+                            builder: (context) =>
+                                const AdminUserListPage()), // Use the imported class
                       );
                     },
                     isSelected:
@@ -242,14 +249,16 @@ class _AdminRestaurantListPageState extends State<AdminRestaurantListPage> {
                                 ),
                               ),
                               DataCell(Text(restaurant.name ?? 'N/A')),
-                              DataCell(Text(restaurant.cuisines?.join(", ") ?? 'N/A')),
+                              DataCell(Text(
+                                  restaurant.cuisines?.join(", ") ?? 'N/A')),
                               DataCell(Text(restaurant.address ?? 'N/A')),
                               DataCell(Text(restaurant.phone ?? 'N/A')),
                               DataCell(
                                 Row(
                                   children: [
                                     IconButton(
-                                      icon: const Icon(Icons.edit, color: Colors.blue),
+                                      icon: const Icon(Icons.edit,
+                                          color: Colors.blue),
                                       onPressed: () {
                                         Navigator.push(
                                           context,
@@ -262,7 +271,8 @@ class _AdminRestaurantListPageState extends State<AdminRestaurantListPage> {
                                       },
                                     ),
                                     IconButton(
-                                      icon: const Icon(Icons.delete, color: Colors.red),
+                                      icon: const Icon(Icons.delete,
+                                          color: Colors.red),
                                       onPressed: () {
                                         Navigator.push(
                                           context,
@@ -293,12 +303,8 @@ class _AdminRestaurantListPageState extends State<AdminRestaurantListPage> {
   }
 
   Widget _buildSidebarItem(
-    BuildContext context,
-    String title,
-    IconData icon,
-    VoidCallback onTap,
-    {bool isSelected = false}
-  ) {
+      BuildContext context, String title, IconData icon, VoidCallback onTap,
+      {bool isSelected = false}) {
     return InkWell(
       onTap: onTap,
       child: Container(

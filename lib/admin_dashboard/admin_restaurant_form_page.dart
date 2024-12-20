@@ -11,7 +11,8 @@ class AdminRestaurantFormPage extends StatefulWidget {
   const AdminRestaurantFormPage({super.key, this.restaurant});
 
   @override
-  _AdminRestaurantFormPageState createState() => _AdminRestaurantFormPageState();
+  _AdminRestaurantFormPageState createState() =>
+      _AdminRestaurantFormPageState();
 }
 
 class _AdminRestaurantFormPageState extends State<AdminRestaurantFormPage> {
@@ -54,21 +55,29 @@ class _AdminRestaurantFormPageState extends State<AdminRestaurantFormPage> {
       _addressController.text = widget.restaurant!.address ?? '';
       _phoneController.text = widget.restaurant!.phone ?? '';
       _latitudeController.text = widget.restaurant!.latitude?.toString() ?? '';
-      _longitudeController.text = widget.restaurant!.longitude?.toString() ?? '';
+      _longitudeController.text =
+          widget.restaurant!.longitude?.toString() ?? '';
       _websiteController.text = widget.restaurant!.website ?? '';
       _imageUrlController.text = widget.restaurant!.imageUrl ?? '';
       _priceRangeController.text = widget.restaurant!.priceRange ?? '';
       _rankingController.text = widget.restaurant!.ranking?.toString() ?? '';
-      _detailedAddressController.text = widget.restaurant!.detailedAddress?.toString() ?? '';
-      _reviewsPerRatingController.text = widget.restaurant!.reviewsPerRating?.toString() ?? '';
-      _reviewKeywordsController.text = widget.restaurant!.reviewKeywords?.join(', ') ?? '';
-      _openHoursController.text = widget.restaurant!.openHours?.toString() ?? '';
+      _detailedAddressController.text =
+          widget.restaurant!.detailedAddress?.toString() ?? '';
+      _reviewsPerRatingController.text =
+          widget.restaurant!.reviewsPerRating?.toString() ?? '';
+      _reviewKeywordsController.text =
+          widget.restaurant!.reviewKeywords?.join(', ') ?? '';
+      _openHoursController.text =
+          widget.restaurant!.openHours?.toString() ?? '';
       _menuLinkController.text = widget.restaurant!.menuLink ?? '';
       _deliveryUrlController.text = widget.restaurant!.deliveryUrl ?? '';
       _dietsController.text = widget.restaurant!.diets?.join(', ') ?? '';
-      _mealTypesController.text = widget.restaurant!.mealTypes?.join(', ') ?? '';
-      _diningOptionsController.text = widget.restaurant!.diningOptions?.join(', ') ?? '';
-      _ownerTypesController.text = widget.restaurant!.ownerTypes?.join(', ') ?? '';
+      _mealTypesController.text =
+          widget.restaurant!.mealTypes?.join(', ') ?? '';
+      _diningOptionsController.text =
+          widget.restaurant!.diningOptions?.join(', ') ?? '';
+      _ownerTypesController.text =
+          widget.restaurant!.ownerTypes?.join(', ') ?? '';
       _topTagsController.text = widget.restaurant!.topTags?.join(', ') ?? '';
       _isOpen = widget.restaurant!.isOpen ?? false;
     }
@@ -80,7 +89,8 @@ class _AdminRestaurantFormPageState extends State<AdminRestaurantFormPage> {
         id: int.parse(_idController.text),
         name: _nameController.text,
         description: _descriptionController.text,
-        cuisines: _cuisinesController.text.split(',').map((e) => e.trim()).toList(),
+        cuisines:
+            _cuisinesController.text.split(',').map((e) => e.trim()).toList(),
         address: _addressController.text,
         phone: _phoneController.text,
         latitude: double.tryParse(_latitudeController.text),
@@ -88,22 +98,42 @@ class _AdminRestaurantFormPageState extends State<AdminRestaurantFormPage> {
         website: _websiteController.text,
         imageUrl: _imageUrlController.text,
         priceRange: _priceRangeController.text,
-        ranking: _rankingController.text.isNotEmpty ? json.decode(_rankingController.text) : null,
-        detailedAddress: _detailedAddressController.text.isNotEmpty ? json.decode(_detailedAddressController.text) : null,
-        reviewsPerRating: _reviewsPerRatingController.text.isNotEmpty ? Map<String, int>.from(json.decode(_reviewsPerRatingController.text)) : null,
-        reviewKeywords: _reviewKeywordsController.text.split(',').map((e) => e.trim()).toList(),
-        openHours: _openHoursController.text.isNotEmpty ? json.decode(_openHoursController.text) : null,
+        ranking: _rankingController.text.isNotEmpty
+            ? json.decode(_rankingController.text)
+            : null,
+        detailedAddress: _detailedAddressController.text.isNotEmpty
+            ? json.decode(_detailedAddressController.text)
+            : null,
+        reviewsPerRating: _reviewsPerRatingController.text.isNotEmpty
+            ? Map<String, int>.from(
+                json.decode(_reviewsPerRatingController.text))
+            : null,
+        reviewKeywords: _reviewKeywordsController.text
+            .split(',')
+            .map((e) => e.trim())
+            .toList(),
+        openHours: _openHoursController.text.isNotEmpty
+            ? json.decode(_openHoursController.text)
+            : null,
         menuLink: _menuLinkController.text,
         deliveryUrl: _deliveryUrlController.text,
         diets: _dietsController.text.split(',').map((e) => e.trim()).toList(),
-        mealTypes: _mealTypesController.text.split(',').map((e) => e.trim()).toList(),
-        diningOptions: _diningOptionsController.text.split(',').map((e) => e.trim()).toList(),
-        ownerTypes: _ownerTypesController.text.isNotEmpty ? json.decode(_ownerTypesController.text) : null,
-        topTags: _topTagsController.text.split(',').map((e) => e.trim()).toList(),
+        mealTypes:
+            _mealTypesController.text.split(',').map((e) => e.trim()).toList(),
+        diningOptions: _diningOptionsController.text
+            .split(',')
+            .map((e) => e.trim())
+            .toList(),
+        ownerTypes: _ownerTypesController.text.isNotEmpty
+            ? json.decode(_ownerTypesController.text)
+            : null,
+        topTags:
+            _topTagsController.text.split(',').map((e) => e.trim()).toList(),
         isOpen: _isOpen,
       );
 
-      List<Restaurant> existingRestaurants = await _localStorageService.getRestaurants();
+      List<Restaurant> existingRestaurants =
+          await _localStorageService.getRestaurants();
       if (widget.restaurant == null) {
         existingRestaurants.add(newRestaurant);
       } else {
@@ -120,7 +150,8 @@ class _AdminRestaurantFormPageState extends State<AdminRestaurantFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.restaurant == null ? 'Add Restaurant' : 'Edit Restaurant'),
+        title: Text(
+            widget.restaurant == null ? 'Add Restaurant' : 'Edit Restaurant'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -131,7 +162,9 @@ class _AdminRestaurantFormPageState extends State<AdminRestaurantFormPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Required Fields
-                Text('Required Fields', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                Text('Required Fields',
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
                 TextFormField(
                   controller: _idController,
@@ -239,7 +272,9 @@ class _AdminRestaurantFormPageState extends State<AdminRestaurantFormPage> {
                     ElevatedButton(
                       onPressed: _saveRestaurant,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: widget.restaurant == null ? Colors.green : Colors.yellow,
+                        backgroundColor: widget.restaurant == null
+                            ? Colors.green
+                            : Colors.yellow,
                         foregroundColor: Colors.white,
                       ),
                       child: Text(widget.restaurant == null ? 'Add' : 'Save'),
@@ -254,7 +289,8 @@ class _AdminRestaurantFormPageState extends State<AdminRestaurantFormPage> {
                         backgroundColor: Colors.blue,
                         foregroundColor: Colors.white,
                       ),
-                      child: Text(_showAdvancedFields ? 'Hide Advanced' : 'Advanced'),
+                      child: Text(
+                          _showAdvancedFields ? 'Hide Advanced' : 'Advanced'),
                     ),
                     ElevatedButton(
                       onPressed: () {
@@ -273,11 +309,14 @@ class _AdminRestaurantFormPageState extends State<AdminRestaurantFormPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 16),
-                      Text('Advanced Fields', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      Text('Advanced Fields',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _priceRangeController,
-                        decoration: const InputDecoration(labelText: 'Price Range'),
+                        decoration:
+                            const InputDecoration(labelText: 'Price Range'),
                       ),
                       TextFormField(
                         controller: _rankingController,
@@ -285,27 +324,33 @@ class _AdminRestaurantFormPageState extends State<AdminRestaurantFormPage> {
                       ),
                       TextFormField(
                         controller: _detailedAddressController,
-                        decoration: const InputDecoration(labelText: 'Detailed Address'),
+                        decoration: const InputDecoration(
+                            labelText: 'Detailed Address'),
                       ),
                       TextFormField(
                         controller: _reviewsPerRatingController,
-                        decoration: const InputDecoration(labelText: 'Reviews Per Rating'),
+                        decoration: const InputDecoration(
+                            labelText: 'Reviews Per Rating'),
                       ),
                       TextFormField(
                         controller: _reviewKeywordsController,
-                        decoration: const InputDecoration(labelText: 'Review Keywords'),
+                        decoration:
+                            const InputDecoration(labelText: 'Review Keywords'),
                       ),
                       TextFormField(
                         controller: _openHoursController,
-                        decoration: const InputDecoration(labelText: 'Open Hours'),
+                        decoration:
+                            const InputDecoration(labelText: 'Open Hours'),
                       ),
                       TextFormField(
                         controller: _menuLinkController,
-                        decoration: const InputDecoration(labelText: 'Menu Link'),
+                        decoration:
+                            const InputDecoration(labelText: 'Menu Link'),
                       ),
                       TextFormField(
                         controller: _deliveryUrlController,
-                        decoration: const InputDecoration(labelText: 'Delivery URL'),
+                        decoration:
+                            const InputDecoration(labelText: 'Delivery URL'),
                       ),
                       TextFormField(
                         controller: _dietsController,
@@ -313,19 +358,23 @@ class _AdminRestaurantFormPageState extends State<AdminRestaurantFormPage> {
                       ),
                       TextFormField(
                         controller: _mealTypesController,
-                        decoration: const InputDecoration(labelText: 'Meal Types'),
+                        decoration:
+                            const InputDecoration(labelText: 'Meal Types'),
                       ),
                       TextFormField(
                         controller: _diningOptionsController,
-                        decoration: const InputDecoration(labelText: 'Dining Options'),
+                        decoration:
+                            const InputDecoration(labelText: 'Dining Options'),
                       ),
                       TextFormField(
                         controller: _ownerTypesController,
-                        decoration: const InputDecoration(labelText: 'Owner Types'),
+                        decoration:
+                            const InputDecoration(labelText: 'Owner Types'),
                       ),
                       TextFormField(
                         controller: _topTagsController,
-                        decoration: const InputDecoration(labelText: 'Top Tags'),
+                        decoration:
+                            const InputDecoration(labelText: 'Top Tags'),
                       ),
                       Row(
                         children: [

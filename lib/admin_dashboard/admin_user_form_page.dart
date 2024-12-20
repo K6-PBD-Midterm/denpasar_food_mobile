@@ -110,7 +110,8 @@ class _AdminUserFormPageState extends State<AdminUserFormPage> {
                   decoration: const InputDecoration(labelText: 'Password *'),
                   obscureText: true,
                   validator: (value) {
-                    if (widget.user == null && (value == null || value.isEmpty)) {
+                    if (widget.user == null &&
+                        (value == null || value.isEmpty)) {
                       return 'Please enter the password';
                     }
                     return null;
@@ -119,10 +120,12 @@ class _AdminUserFormPageState extends State<AdminUserFormPage> {
               if (widget.user == null)
                 TextFormField(
                   controller: _confirmPasswordController,
-                  decoration: const InputDecoration(labelText: 'Confirm Password *'),
+                  decoration:
+                      const InputDecoration(labelText: 'Confirm Password *'),
                   obscureText: true,
                   validator: (value) {
-                    if (widget.user == null && (value == null || value.isEmpty)) {
+                    if (widget.user == null &&
+                        (value == null || value.isEmpty)) {
                       return 'Please confirm the password';
                     }
                     return null;
@@ -161,7 +164,8 @@ class _AdminUserFormPageState extends State<AdminUserFormPage> {
                   ElevatedButton(
                     onPressed: _saveUser,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: widget.user == null ? Colors.green : Colors.yellow,
+                      backgroundColor:
+                          widget.user == null ? Colors.green : Colors.yellow,
                       foregroundColor: Colors.white,
                     ),
                     child: Text(widget.user == null ? 'Add' : 'Save'),

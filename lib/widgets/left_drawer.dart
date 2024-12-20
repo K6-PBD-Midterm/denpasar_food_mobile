@@ -77,18 +77,21 @@ class LeftDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const LikedRestaurantsPage()),
+                MaterialPageRoute(
+                    builder: (context) => const LikedRestaurantsPage()),
               );
             },
           ),
           const Divider(),
           ListTile(
-            leading: const Icon(Icons.person, color: Colors.black), // User icon for Admin Dashboard
+            leading: const Icon(Icons.person,
+                color: Colors.black), // User icon for Admin Dashboard
             title: const Text("Admin Dashboard"),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const AdminRestaurantListPage()),
+                MaterialPageRoute(
+                    builder: (context) => const AdminRestaurantListPage()),
               );
             },
           ),

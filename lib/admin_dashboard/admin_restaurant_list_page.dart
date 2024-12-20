@@ -127,21 +127,26 @@ class _AdminRestaurantListPageState extends State<AdminRestaurantListPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.person, color: Colors.black, size: 24),
+                    icon:
+                        const Icon(Icons.person, color: Colors.black, size: 24),
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => const AdminUserListPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const AdminUserListPage()),
                       );
                     },
                   ),
                   const SizedBox(height: 32),
                   IconButton(
-                    icon: const Icon(Icons.restaurant, color: Colors.black, size: 24),
+                    icon: const Icon(Icons.restaurant,
+                        color: Colors.black, size: 24),
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => const AdminRestaurantListPage()),
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const AdminRestaurantListPage()),
                       );
                     },
                   ),
@@ -186,7 +191,9 @@ class _AdminRestaurantListPageState extends State<AdminRestaurantListPage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const AdminRestaurantFormPage()),
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const AdminRestaurantFormPage()),
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -204,7 +211,9 @@ class _AdminRestaurantListPageState extends State<AdminRestaurantListPage> {
                       builder: (context, constraints) {
                         final double totalWidth = constraints.maxWidth;
                         // Fixed width: checkbox + name + actions
-                        final double fixedWidth = _checkboxColumnWidth + _nameColumnWidth + _actionsColumnWidth;
+                        final double fixedWidth = _checkboxColumnWidth +
+                            _nameColumnWidth +
+                            _actionsColumnWidth;
                         double addressColumnWidth = totalWidth - fixedWidth;
                         // If not enough room, clamp address column
                         if (addressColumnWidth < 20) {
@@ -217,7 +226,9 @@ class _AdminRestaurantListPageState extends State<AdminRestaurantListPage> {
                               label: SizedBox(
                                 width: _checkboxColumnWidth,
                                 child: Checkbox(
-                                  value: _selectedRestaurantIds.length == _restaurants.length && _restaurants.isNotEmpty,
+                                  value: _selectedRestaurantIds.length ==
+                                          _restaurants.length &&
+                                      _restaurants.isNotEmpty,
                                   onChanged: _selectAllRestaurants,
                                 ),
                               ),
@@ -249,9 +260,11 @@ class _AdminRestaurantListPageState extends State<AdminRestaurantListPage> {
                                   SizedBox(
                                     width: _checkboxColumnWidth,
                                     child: Checkbox(
-                                      value: _selectedRestaurantIds.contains(restaurant.id),
+                                      value: _selectedRestaurantIds
+                                          .contains(restaurant.id),
                                       onChanged: (bool? checked) {
-                                        _toggleRestaurantSelection(restaurant.id!);
+                                        _toggleRestaurantSelection(
+                                            restaurant.id!);
                                       },
                                     ),
                                   ),
@@ -271,23 +284,29 @@ class _AdminRestaurantListPageState extends State<AdminRestaurantListPage> {
                                     child: Row(
                                       children: [
                                         IconButton(
-                                          icon: const Icon(Icons.edit, color: Colors.blue),
+                                          icon: const Icon(Icons.edit,
+                                              color: Colors.blue),
                                           onPressed: () {
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) => AdminRestaurantFormPage(restaurant: restaurant),
+                                                builder: (context) =>
+                                                    AdminRestaurantFormPage(
+                                                        restaurant: restaurant),
                                               ),
                                             );
                                           },
                                         ),
                                         IconButton(
-                                          icon: const Icon(Icons.delete, color: Colors.red),
+                                          icon: const Icon(Icons.delete,
+                                              color: Colors.red),
                                           onPressed: () {
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) => AdminRestaurantDeletePage(restaurant: restaurant),
+                                                builder: (context) =>
+                                                    AdminRestaurantDeletePage(
+                                                        restaurant: restaurant),
                                               ),
                                             );
                                           },

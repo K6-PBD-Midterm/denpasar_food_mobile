@@ -36,7 +36,8 @@ class _ReviewPageState extends State<ReviewPage> {
         Uri.parse(url),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer YOUR_AUTH_TOKEN', // Include token if required
+          'Authorization':
+              'Bearer YOUR_AUTH_TOKEN', // Include token if required
         },
         body: jsonEncode(requestData),
       );
@@ -50,7 +51,8 @@ class _ReviewPageState extends State<ReviewPage> {
       } else {
         final responseData = jsonDecode(response.body);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${responseData['error'] ?? 'Failed'}')),
+          SnackBar(
+              content: Text('Error: ${responseData['error'] ?? 'Failed'}')),
         );
       }
     } catch (error) {
@@ -156,9 +158,9 @@ class _ReviewPageState extends State<ReviewPage> {
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _submitReview,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF5C2A3C), // Updated to purple color
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    backgroundColor:
+                        const Color(0xFF5C2A3C), // Updated to purple color
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   ),
                   child: _isLoading
                       ? CircularProgressIndicator(color: Colors.white)

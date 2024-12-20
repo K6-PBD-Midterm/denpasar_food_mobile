@@ -30,13 +30,17 @@ class AdminRestaurantDeletePage extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () async {
                     final localStorageService = LocalStorageService();
-                    List<Restaurant> existingRestaurants = await localStorageService.getRestaurants();
-                    existingRestaurants.removeWhere((r) => r.id == restaurant.id);
-                    await localStorageService.saveRestaurants(existingRestaurants);
+                    List<Restaurant> existingRestaurants =
+                        await localStorageService.getRestaurants();
+                    existingRestaurants
+                        .removeWhere((r) => r.id == restaurant.id);
+                    await localStorageService
+                        .saveRestaurants(existingRestaurants);
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const AdminRestaurantListPage()),
+                          builder: (context) =>
+                              const AdminRestaurantListPage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
