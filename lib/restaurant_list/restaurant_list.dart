@@ -523,7 +523,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          const ViewReviewsPage(),
+                                           ReviewPage(restaurantId: snapshot.data[index].id, imageUrl: snapshot.data[index].imageUrl),
                                     ),
                                   );
                                 },
