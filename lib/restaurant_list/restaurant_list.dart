@@ -7,28 +7,28 @@ import '../widgets/left_drawer.dart';
 import '../reviews/review_page.dart';
 import '../reviews/view_reviews.dart';
 
-class RestaurantPage extends StatefulWidget {
-  const RestaurantPage({super.key});
+class RestaurantListPage extends StatefulWidget {
+  const RestaurantListPage({super.key});
 
   @override
-  State<RestaurantPage> createState() => _RestaurantPageState();
+  State<RestaurantListPage> createState() => _RestaurantListPageState();
 
   //////////////////////// bonbon: Static helper function to fetch restaurants ////////////////////////
   static Future<List<Restaurant>> fetchRestaurantsStatic(
       BuildContext context) async {
     final request = Provider.of<CookieRequest>(context, listen: false);
-    final restaurantPageState =
-        _RestaurantPageState(); // Create an instance of _RestaurantPageState
-    return await restaurantPageState.fetchRestaurants(request);
+    final RestaurantListPageState =
+        _RestaurantListPageState(); // Create an instance of _RestaurantListPageState
+    return await RestaurantListPageState.fetchRestaurants(request);
   }
   //////////////////////// bonbon: Static helper function to fetch restaurants ////////////////////////
 }
 
-class _RestaurantPageState extends State<RestaurantPage> {
+class _RestaurantListPageState extends State<RestaurantListPage> {
   final TextEditingController _searchController = TextEditingController();
   Timer? _debounce;
   String _searchQuery = '';
-  List<String> _selectedCuisines = [];
+  final List<String> _selectedCuisines = [];
   List<String> _allCuisines = [];
   Key _dropdownKey = GlobalKey();
 

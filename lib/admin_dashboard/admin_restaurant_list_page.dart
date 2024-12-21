@@ -38,7 +38,7 @@ class _AdminRestaurantListPageState extends State<AdminRestaurantListPage> {
   Future<void> _loadRestaurants() async {
     try {
       final fetchedRestaurants =
-          await RestaurantPage.fetchRestaurantsStatic(context);
+          await RestaurantListPage.fetchRestaurantsStatic(context);
       await _localStorageService.saveRestaurants(fetchedRestaurants);
       _filterRestaurants();
     } catch (e) {

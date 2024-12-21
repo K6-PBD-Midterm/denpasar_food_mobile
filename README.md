@@ -98,7 +98,7 @@ Admin:
 
 ### Endpoints Used:
 
-- User Login: Authenticate a user and start a session (POST /auth/login/)
+- User Login: Authenticate a user and start a session (POST /flutter-auth/login/)
     
     Parameters:
     - username: The user's username.
@@ -106,7 +106,7 @@ Admin:
 
 - User Logout: Log out the user and end the session (POST /auth/logout/)
 
-- User Registration: Register a new user account (POST /auth/register/)
+- User Registration: Register a new user account (POST /flutter-auth/register/)
     
     Parameters:
     - username: Desired username.

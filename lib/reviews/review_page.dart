@@ -7,7 +7,7 @@ class ReviewPage extends StatefulWidget {
   final int restaurantId;
   final String? imageUrl; // Added to accept image URL for the restaurant
 
-  ReviewPage({required this.restaurantId, this.imageUrl});
+  const ReviewPage({super.key, required this.restaurantId, this.imageUrl});
 
   @override
   _ReviewPageState createState() => _ReviewPageState();

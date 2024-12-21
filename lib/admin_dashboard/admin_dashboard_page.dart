@@ -7,7 +7,7 @@ import 'package:denpasar_food_mobile/models/restaurant.dart';
 import 'package:denpasar_food_mobile/services/local_storage_service.dart';
 import '../widgets/left_drawer.dart'; // Import left_drawer.dart
 import 'admin_user_list_page.dart'; // Import admin_user_list_page.dart
-import '../restaurant_list/restaurant_list.dart'; // Import RestaurantPage
+import '../restaurant_list/restaurant_list.dart'; // Import RestaurantListPage
 
 class AdminRestaurantListPage extends StatefulWidget {
   const AdminRestaurantListPage({super.key});
@@ -32,7 +32,7 @@ class _AdminRestaurantListPageState extends State<AdminRestaurantListPage> {
 
   Future<void> _loadRestaurants() async {
     try {
-      final fetchedRestaurants = await RestaurantPage.fetchRestaurantsStatic(
+      final fetchedRestaurants = await RestaurantListPage.fetchRestaurantsStatic(
           context); // Use the static helper function
       await _localStorageService.saveRestaurants(fetchedRestaurants);
       _filterRestaurants();

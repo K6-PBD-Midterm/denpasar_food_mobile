@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ViewReviewsPage extends StatelessWidget {
-  const ViewReviewsPage({Key? key}) : super(key: key);
+  const ViewReviewsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

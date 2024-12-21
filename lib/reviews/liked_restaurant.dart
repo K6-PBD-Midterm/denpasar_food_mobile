@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LikedRestaurantsPage extends StatelessWidget {
-  const LikedRestaurantsPage({Key? key}) : super(key: key);
+  const LikedRestaurantsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,37 +1,32 @@
 import 'package:flutter/material.dart';
-import '../restaurant_list/restaurant_list.dart'; // Import RestaurantPage
-import '../authentication/register.dart'; // Import RegisterPage
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'register.dart';
+import '/restaurant_list/restaurant_list.dart';
+import 'dart:convert';
 
-class LoginApp extends StatelessWidget {
-  const LoginApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Login',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.indigo,
-        ),
-      ),
-      home: const LoginPage(),
-    );
-  }
-}
-
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final TextEditingController _usernameController = TextEditingController();
-    final TextEditingController _passwordController = TextEditingController();
+  LoginPageState createState() => LoginPageState();
+}
 
+class LoginPageState extends State<LoginPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  late CookieRequest request;
+
+  @override
+  void initState() {
+    super.initState();
+    request = context.read<CookieRequest>();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
+      appBar: AppBar(title: const Text('Login')),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
@@ -81,12 +76,74 @@ class LoginPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 24.0),
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const RestaurantPage()),
-                      );
+                    onPressed: () async {
+                      String username = _usernameController.text;
+                      String password = _passwordController.text;
+
+                      try {
+                        final response = await request.post(
+                          "https://denpasar-food.vercel.app/flutter-auth/login/",
+                          {
+                            'username': username,
+                            'password': password,
+                          },
+                        );
+
+                        // Handle string response (could be HTML or JSON string)
+                        if (response is String) {
+                          try {
+                            final responseData = jsonDecode(response);
+                            if (responseData['status'] == 'success') {
+                              if (context.mounted) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => RestaurantListPage()),
+                                );
+                                ScaffoldMessenger.of(context)
+                                  ..hideCurrentSnackBar()
+                                  ..showSnackBar(
+                                    SnackBar(
+                                        content: Text("Welcome, $username.")),
+                                  );
+                              }
+                            } else {
+                              throw Exception(responseData['message'] ?? 'Login failed');
+                            }
+                          } catch (e) {
+                            // If JSON decode fails, it's probably HTML
+                            throw Exception('Invalid server response. Please try again.');
+                          }
+                        }
+                        // Handle map response
+                        else if (response is Map) {
+                          if (response['status'] == 'success') {
+                            if (context.mounted) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RestaurantListPage()),
+                              );
+                              ScaffoldMessenger.of(context)
+                                ..hideCurrentSnackBar()
+                                ..showSnackBar(
+                                  SnackBar(content: Text("Welcome, $username.")),
+                                );
+                            }
+                          } else {
+                            throw Exception(response['message'] ?? 'Login failed');
+                          }
+                        }
+                      } catch (e) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(e.toString()),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,

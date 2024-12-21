@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:denpasar_food_mobile/screens/map_page.dart';
 import 'package:denpasar_food_mobile/admin_dashboard/admin_restaurant_list_page.dart'; // Import the admin page
-import 'package:denpasar_food_mobile/restaurant_list/restaurant_list.dart'; // Import the RestaurantPage
+import 'package:denpasar_food_mobile/restaurant_list/restaurant_list.dart'; // Import the RestaurantListPage
 import 'package:denpasar_food_mobile/reviews/liked_restaurant.dart'; // Import the LikedRestaurantsPage
 import 'package:denpasar_food_mobile/authentication/login.dart'; // Import the LoginPage
 import 'package:denpasar_food_mobile/authentication/register.dart'; // Import the RegisterPage
@@ -57,7 +57,7 @@ class LeftDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const RestaurantPage()),
+                MaterialPageRoute(builder: (context) => const RestaurantListPage()),
               );
             },
           ),
