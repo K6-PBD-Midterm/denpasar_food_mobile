@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:denpasar_food_mobile/screens/map_page.dart';
+import 'package:denpasar_food_mobile/map/map_page.dart';
 import 'package:denpasar_food_mobile/admin_dashboard/admin_restaurant_list_page.dart'; // Import the admin page
 import 'package:denpasar_food_mobile/restaurant_list/restaurant_list.dart'; // Import the RestaurantListPage
 import 'package:denpasar_food_mobile/reviews/liked_restaurant.dart'; // Import the LikedRestaurantsPage
@@ -16,18 +16,39 @@ class LeftDrawer extends StatelessWidget {
         children: [
           DrawerHeader(
             decoration: const BoxDecoration(
-              color: Colors.white,
+              image:DecorationImage(image: 
+              AssetImage('../../assets/drawer_background.png'), 
+              fit: BoxFit.cover),
+              color: Color(0x80854158), // Light purple color
             ),
-            child: const Text(
+            
+            child:
+            Padding(  
+            padding: const EdgeInsets.only(top: 15),
+              child:   
+              
+          Text(
               "Restaurants in Denpasar",
               textAlign: TextAlign.center,
               style: TextStyle(
+                
+                
                 fontSize: 21,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color:  Color(0xFFF6D078),
+                shadows: [
+                         Shadow(
+                            offset: Offset(2.0, 2.0),
+                            blurRadius: 3.0,
+                            color: Color.fromARGB(128, 0, 0, 0),
+                           ),
+                        ],
               ),
             ),
-          ),
+              ),
+            ),
+            
+          
           ListTile(
             leading: const Icon(Icons.login, color: Colors.black),
             title: const Text("Login"),

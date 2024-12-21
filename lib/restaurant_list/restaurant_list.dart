@@ -122,21 +122,62 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
     final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Restaurants in Denpasar'),
+        backgroundColor: const Color(0xFF854158), // Couleur de la barre du haut
+        title: Text(
+          'Restaurants in Denpasar',
+          style: TextStyle(
+            color: const Color(0xFFF6D078), // Couleur du titre
+            fontSize: 21,
+            fontWeight: FontWeight.bold,
+            
+          ),
+          
+        ),
+        iconTheme: IconThemeData(
+        color: const Color(0xFFF6D078),
+         ), // Couleur de l'icône du menu hamburger
       ),
       drawer: const LeftDrawer(),
-      body: Column(
+
+      body: 
+      
+      Column(
         children: [
+          ClipRRect(
+             borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(16.0),
+              bottomRight: Radius.circular(16.0),
+            ),
+            child:
+            Image.asset('../../assets/background_list.png',
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: 100,),),
+          
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(top: 20.0, left: 8.0, right: 8.0, bottom: 8.0), 
             child: Column(
               children: [
-                TextField(
+                
+               TextField(
                   controller: _searchController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'Search restaurants...',
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.search),
+                    filled: true,
+                    fillColor: const Color(0x80F6D078), 
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16.0), 
+                      borderSide: const BorderSide(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16.0), 
+                      borderSide: const BorderSide(
+                        color: Colors.grey,
+                      ),
+                    ),
                   ),
                   onChanged: _onSearchChanged,
                 ),
@@ -145,7 +186,8 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(12),
+                    color:  Color(0x80F6D078),
                   ),
                   child: DropdownButton<String>(
                     key: _dropdownKey,
@@ -171,7 +213,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                                   child: Checkbox(
                                     value: isSelected,
                                     activeColor: Theme.of(context).primaryColor,
-                                    checkColor: Colors.white,
+                                    checkColor:  Color(0x80F6D078),
                                     materialTapTargetSize:
                                         MaterialTapTargetSize.shrinkWrap,
                                     onChanged: (bool? checked) =>
@@ -237,10 +279,12 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                 }
                 return ListView.builder(
                   itemCount: snapshot.data.length,
-                  itemBuilder: (_, index) => Card(
+                  itemBuilder: (_, index) => 
+                  Card(
                     margin: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
-                    color: const Color(0xFF5C2A3C),
+                    horizontal: 16, vertical: 12),
+                    color: const Color(0xFF854158),
+                    elevation: 8.0,
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
@@ -249,7 +293,8 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                           Stack(
                             children: [
                               Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                //crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
                                     child: Column(
@@ -263,60 +308,121 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                                           style: const TextStyle(
                                             fontSize: 20.0,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.white,
+                                            color:  Color(0xFFF6D078),
+                                            shadows: [
+                                              Shadow(
+                                                offset: Offset(2.0, 2.0),
+                                                blurRadius: 3.0,
+                                                color: Color.fromARGB(128, 0, 0, 0),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        const SizedBox(height: 8),
+                                        const SizedBox(height: 10),
 
                                         // Cuisine
-                                        Text(
-                                          "Cuisine: ${snapshot.data[index].cuisines?.join(', ') ?? 'N/A'}",
-                                          style: const TextStyle(
-                                            fontSize: 16.0,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 4),
+                                        snapshot.data[index].phone != null && 
+                                        snapshot.data[index].phone!.isNotEmpty 
+                                        ?
+                                         Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.food_bank, // Icône d'épingle (vous pouvez choisir une autre icône si vous le souhaitez)
+                                              color: Color(0xFFD9D9D9),
+                                              size: 16.0,
+                                            ),
+                                            const SizedBox(width: 5.0), // Espacement entre l'icône et le texte
+                                            Expanded(
+                                              child: Text(
+                                                 "${snapshot.data[index].cuisines?.join(', ') ?? 'No cuisines information available :('}",
+                                                style: const TextStyle(
+                                                  fontSize: 14.0,
+                                                  color: Color(0xFFD9D9D9),
+                                                  height : 1.2,
+                                                  fontStyle: FontStyle.italic,
+                                                ),
+                                                softWrap: true,
+                                                overflow: TextOverflow.visible,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                        : const SizedBox.shrink(),
 
                                         // Address
-                                        Text(
+                                        /*Text(
                                           "Address: ${snapshot.data[index].address ?? 'N/A'}",
                                           style: const TextStyle(
                                             fontSize: 14.0,
                                             color: Colors.white,
                                           ),
-                                        ),
+                                        ),*/
                                         const SizedBox(height: 4),
 
                                         // Phone
-                                        Text(
-                                          "Phone: ${snapshot.data[index].phone ?? 'N/A'}",
-                                          style: const TextStyle(
-                                            fontSize: 14.0,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 4),
-
+                                        snapshot.data[index].phone != null && 
+                                        snapshot.data[index].phone!.isNotEmpty 
+                                        ? Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.phone, // Icône d'épingle (vous pouvez choisir une autre icône si vous le souhaitez)
+                                              color: Color(0xFFD9D9D9),
+                                              size: 16.0,
+                                            ),
+                                            const SizedBox(width: 4.0), // Espacement entre l'icône et le texte
+                                            Expanded(
+                                              child: Text(
+                                                "${snapshot.data[index].phone ?? "no phone available :("}",
+                                                style: const TextStyle(
+                                                  fontSize: 14.0,
+                                                  color: Color(0xFFD9D9D9),
+                                  
+                                                ),
+                                                softWrap: true,
+                                                overflow: TextOverflow.visible,
+                                              ),
+                                            ),
+                                          ],
+                                        ) : const SizedBox.shrink(),
+                                      const SizedBox(height: 4),
                                         // Website
-                                        Text(
-                                          "Website: ${snapshot.data[index].website ?? 'N/A'}",
-                                          style: const TextStyle(
-                                            fontSize: 14.0,
-                                            color: Colors.white,
-                                            decoration:
-                                                TextDecoration.underline,
-                                          ),
-                                        ),
+                                         snapshot.data[index].website != null && 
+                                        snapshot.data[index].website!.isNotEmpty 
+                                        ? 
+                                       Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.link, // Icône d'épingle (vous pouvez choisir une autre icône si vous le souhaitez)
+                                              color: Color.fromARGB(255, 170, 168, 205),
+                                              size: 16.0,
+                                            ),
+                                            const SizedBox(width: 4.0), // Espacement entre l'icône et le texte
+                                            Expanded(
+                                              child: Text(
+                                                "${snapshot.data[index].website ?? "no website available :("}",
+                                                style: const TextStyle(
+                                                  fontSize: 14.0,
+                                                  color: Color.fromARGB(255, 170, 168, 205),
+                                                  
+                                                ),
+                                                
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ],
+                                      ) : const SizedBox.shrink(),
                                       ],
                                     ),
                                   ),
                                   const SizedBox(width: 16),
 
                                   // Restaurant Image
+                                 Padding( 
+                                    padding: const EdgeInsets.only(top: 30),
+                                    child:
                                   Container(
-                                    width: 100,
-                                    height: 100,
+                                    width: 120,
+                                    height: 120,
                                     decoration: BoxDecoration(
                                       color: Colors.grey[300],
                                       borderRadius: BorderRadius.circular(8),
@@ -335,13 +441,14 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                                                 Text('Picture not available'),
                                           ),
                                   ),
+                                 ),                             
                                 ],
                               ),
 
                               // Heart Icon
                               Positioned(
-                                top: 0,
-                                right: 0,
+                                top: -10,
+                                right: -10,
                                 child: IconButton(
                                   onPressed: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -349,7 +456,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                                         content: Text(
                                           "You have liked ${snapshot.data[index].name ?? 'this restaurant'}",
                                           style: const TextStyle(
-                                              color: Colors.white),
+                                              color: Color(0xFFD9D9D9)),
                                         ),
                                         backgroundColor:
                                             const Color(0xFF5C2A3C),
@@ -358,7 +465,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                                     );
                                   },
                                   icon: const Icon(Icons.favorite_border),
-                                  color: Colors.yellow,
+                                  color: const Color(0xFFF6D078),
                                 ),
                               ),
                             ],
@@ -380,10 +487,13 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                                   );
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFFFC107),
+                                  backgroundColor: const Color(0xFFF6D078),
                                 ),
-                                icon: const Icon(Icons.add),
-                                label: const Text('Add a review'),
+                                icon: const Icon(Icons.add,color: Colors.black,),
+                                label: const Text(
+                                  'Add a review',
+                                  style: TextStyle (color: Colors.black),
+                                  ),
                               ),
                               const SizedBox(width: 8),
                               ElevatedButton.icon(
@@ -397,10 +507,10 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                                   );
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFFFC107),
+                                  backgroundColor: const Color(0xFFF6D078),
                                 ),
-                                icon: const Icon(Icons.visibility),
-                                label: const Text('View reviews'),
+                                icon: const Icon(Icons.visibility,color: Colors.black,),
+                                label: const Text('View reviews',style: TextStyle(color: Colors.black),),
                               ),
                             ],
                           ),

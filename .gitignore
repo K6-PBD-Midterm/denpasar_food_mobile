@@ -52,3 +52,23 @@ app.*.map.json
 linux/flutter/**
 windows/flutter/**
 macos/flutter/**
+
+
+
+# Flutter/Dart/Pub related
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+
+# Android related
+.gradle/
+/local.properties
+/captures/
+/build/
+
+# Generated files
+**/GeneratedPluginRegistrant.*
