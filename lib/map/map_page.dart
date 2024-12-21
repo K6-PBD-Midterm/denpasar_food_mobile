@@ -7,7 +7,12 @@ import 'dart:async';
 import 'package:provider/provider.dart';
 
 class MapPage extends StatefulWidget {
-  const MapPage({super.key});
+  final String searchQuery;
+  final double initialLatitude;
+  final double initialLongitude;
+
+  const MapPage({super.key, this.searchQuery='',this.initialLatitude = -8.6705, this.initialLongitude = 115.2126});
+  
 
   @override
   State<MapPage> createState() => _MapPageState();
@@ -24,14 +29,26 @@ class _MapPageState extends State<MapPage> {
   Key _dropdownKey = GlobalKey();
   List<Restaurant> _restaurants = [];
 
+
+
+
   // flutter map
   final MapController _mapController = MapController();
   double _currentZoom = 12.0;
   List<Marker> _markers = [];
   OverlayEntry? _popupOverlayEntry;
 
+
+@override
+  void initState() {
+    super.initState();
+   
+    widget.searchQuery != '' ?  (_searchController.text = widget.searchQuery) : null;
+    _onSearchChanged(widget.searchQuery);
+  }
+
   Future<List<Restaurant>> _loadMarkers(CookieRequest request) async {
-    print(zoom);
+    
     if (_restaurants.isNotEmpty) {
       zoom = false;
       return _restaurants;
@@ -242,20 +259,47 @@ class _MapPageState extends State<MapPage> {
     final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Map restaurants'),
+        backgroundColor: const Color(0xFF854158), 
+        title: Text(
+          'Map',
+          style: TextStyle(
+            color: const Color(0xFFF6D078), 
+            fontSize: 21,
+            fontWeight: FontWeight.bold,
+            
+          ),
+          
+        ),
+        iconTheme: IconThemeData(
+        color: const Color(0xFFF6D078),
+         ), 
       ),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(top: 20.0, left: 8.0, right: 8.0, bottom: 8.0), 
             child: Column(
               children: [
-                TextField(
+                
+               TextField(
                   controller: _searchController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'Search restaurants...',
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.search),
+                    filled: true,
+                    fillColor: const Color(0x80F6D078), 
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16.0), 
+                      borderSide: const BorderSide(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16.0), 
+                      borderSide: const BorderSide(
+                        color: Colors.grey,
+                      ),
+                    ),
                   ),
                   onChanged: _onSearchChanged,
                 ),
@@ -264,15 +308,16 @@ class _MapPageState extends State<MapPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(12),
+                    color:  Color(0x80F6D078),
                   ),
                   child: DropdownButton<String>(
-                    key: _dropdownKey, // Add key here
+                    key: _dropdownKey,
                     isExpanded: true,
                     hint: const Text('Filter by cuisine'),
                     value: null,
-                    menuMaxHeight: 350, // Add maximum height
-                    dropdownColor: Theme.of(context).cardColor, // Match theme
+                    menuMaxHeight: 350,
+                    dropdownColor: Theme.of(context).cardColor,
                     items: _allCuisines.map((String cuisine) {
                       final isSelected = _selectedCuisines.contains(cuisine);
                       return DropdownMenuItem<String>(
@@ -290,7 +335,7 @@ class _MapPageState extends State<MapPage> {
                                   child: Checkbox(
                                     value: isSelected,
                                     activeColor: Theme.of(context).primaryColor,
-                                    checkColor: Colors.white,
+                                    checkColor:  Color(0x80F6D078),
                                     materialTapTargetSize:
                                         MaterialTapTargetSize.shrinkWrap,
                                     onChanged: (bool? checked) =>
@@ -346,7 +391,7 @@ class _MapPageState extends State<MapPage> {
                   return FlutterMap(
                     mapController: _mapController,
                     options: MapOptions(
-                      initialCenter: LatLng(-8.6705, 115.2126),
+                      initialCenter: LatLng(widget.initialLatitude, widget.initialLongitude),
                       initialZoom: 12.0,
                       minZoom: 5.0,
                       maxZoom: 18.0,

@@ -42,8 +42,20 @@ class ViewReviewsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('View Reviews'),
-        backgroundColor: const Color(0xFF5C2A3C), // Purple color
+        backgroundColor: const Color(0xFF854158), 
+        title: Text(
+          'View reviews',
+          style: TextStyle(
+            color: const Color(0xFFF6D078), 
+            fontSize: 21,
+            fontWeight: FontWeight.bold,
+            
+          ),
+          
+        ),
+        iconTheme: IconThemeData(
+        color: const Color(0xFFF6D078),
+         ), 
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

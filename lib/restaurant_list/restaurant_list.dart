@@ -6,6 +6,7 @@ import 'dart:async';
 import '../widgets/left_drawer.dart';
 import '../reviews/review_page.dart';
 import '../reviews/view_reviews.dart';
+import '../map/map_page.dart';
 
 class RestaurantListPage extends StatefulWidget {
   const RestaurantListPage({super.key});
@@ -122,11 +123,11 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
     final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF854158), // Couleur de la barre du haut
+        backgroundColor: const Color(0xFF854158), 
         title: Text(
           'Restaurants in Denpasar',
           style: TextStyle(
-            color: const Color(0xFFF6D078), // Couleur du titre
+            color: const Color(0xFFF6D078), 
             fontSize: 21,
             fontWeight: FontWeight.bold,
             
@@ -135,7 +136,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
         ),
         iconTheme: IconThemeData(
         color: const Color(0xFFF6D078),
-         ), // Couleur de l'icône du menu hamburger
+         ), 
       ),
       drawer: const LeftDrawer(),
 
@@ -418,7 +419,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
 
                                   // Restaurant Image
                                  Padding( 
-                                    padding: const EdgeInsets.only(top: 30),
+                                    padding: const EdgeInsets.only(top: 40),
                                     child:
                                   Container(
                                     width: 120,
@@ -471,32 +472,31 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                             ],
                           ),
                           const SizedBox(height: 16),
-
-                          // Add Review and View Review Buttons
-                          Row(
+                       
+                          // Add Review and View Review Buttons and location map
+                         Row(
+                          //mainAxisAlignment: MainAxisAlignment.center, // Centre les enfants horizontalement
                             children: [
-                              ElevatedButton.icon(
-                                onPressed: () {
+                              //view on map
+                             const SizedBox(width: 12),
+                                   FloatingActionButton(
+                                    onPressed: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ReviewPage(
-                                        restaurantId: snapshot.data[index].id,
-                                      ),
+                                      builder: (context) => MapPage(searchQuery: snapshot.data[index].name, initialLatitude: snapshot.data[index].latitude,initialLongitude: snapshot.data[index].longitude),
                                     ),
                                   );
                                 },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFF6D078),
-                                ),
-                                icon: const Icon(Icons.add,color: Colors.black,),
-                                label: const Text(
-                                  'Add a review',
-                                  style: TextStyle (color: Colors.black),
+                                    backgroundColor: const Color.fromARGB(255, 194, 180, 146), 
+                                    elevation: 10, 
+                                    child: Icon(Icons.location_pin, color: const Color.fromARGB(255, 0, 0, 0)),
                                   ),
-                              ),
-                              const SizedBox(width: 8),
-                              ElevatedButton.icon(
+                                
+                              const SizedBox(width: 32),
+                              Column (
+                                children: [
+                              TextButton.icon(
                                 onPressed: () {
                                   Navigator.push(
                                     context,
@@ -506,14 +506,43 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                                     ),
                                   );
                                 },
-                                style: ElevatedButton.styleFrom(
+                                style: TextButton.styleFrom(
                                   backgroundColor: const Color(0xFFF6D078),
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                                  shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0), 
                                 ),
-                                icon: const Icon(Icons.visibility,color: Colors.black,),
-                                label: const Text('View reviews',style: TextStyle(color: Colors.black),),
+                                ),
+                                icon: const Icon(Icons.visibility,size: 20.0,color: Colors.black,),
+                                label: const Text('View reviews',style: TextStyle(fontSize: 14.0,color: Colors.black),),
                               ),
+                              const SizedBox(height: 5),
+                              TextButton.icon(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ViewReviewsPage(),
+                                    ),
+                                  );
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor: const Color(0xFFF6D078),
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                                  shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0), 
+                                ),
+                                ),
+                                icon: const Icon(Icons.add,size: 20.0,color: Colors.black,),
+                                label: const Text('Add a review',style: TextStyle(fontSize: 14.0,color: Colors.black),),
+                              ),
+                                ],
+                              )
+                              
                             ],
                           ),
+                      
                         ],
                       ),
                     ),

@@ -69,9 +69,21 @@ class _ReviewPageState extends State<ReviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Review Page'),
-        backgroundColor: const Color(0xFF5C2A3C), // Updated to purple color
+       appBar: AppBar(
+        backgroundColor: const Color(0xFF854158), 
+        title: Text(
+          'Review Page',
+          style: TextStyle(
+            color: const Color(0xFFF6D078), 
+            fontSize: 21,
+            fontWeight: FontWeight.bold,
+            
+          ),
+          
+        ),
+        iconTheme: IconThemeData(
+        color: const Color(0xFFF6D078),
+         ), 
       ),
       body: SingleChildScrollView(
         child: Padding(

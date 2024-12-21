@@ -70,7 +70,7 @@ class RegisterPageState extends State<RegisterPage> {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: const Text('Registration Failed'),
+              title: const Text('Your Registration'),
               content: Text(response['message'] ?? 'Registration failed'),
               actions: [
                 TextButton(
